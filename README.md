@@ -1,5 +1,7 @@
 # Screencast Keys (OBS plugin)
 
+<img width="125" height="102" alt="image" src="https://github.com/user-attachments/assets/5167ed8e-7947-40a2-b306-df7c1ea043aa" />
+
 A native OBS Studio source plugin that shows pressed keys and mouse
 buttons on stream/recording, ported from the
 [Blender Screencast Keys addon](../screencast_keys) in this repo. It aims
