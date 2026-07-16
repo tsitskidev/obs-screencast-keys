@@ -68,7 +68,16 @@ obs_properties_t* build_render_settings_properties() {
     obs_properties_add_int(props, "background_margin", "Background Margin", 0, 200, 1);
     obs_property_set_modified_callback(background, background_modified);
 
-    obs_properties_add_int(props, "font_size", "Font Size", 6, 200, 1);
+    // Bundles face name, size, and bold/italic/underline/strikeout into one
+    // native OS font-picker control; read_render_settings() pulls the size
+    // and bold/italic flags back out, and font-resolver.h uses the face
+    // name to find an actual font file for FreeType to load.
+    obs_properties_add_font(props, "font", "Font");
+
+    obs_property_t* align =
+        obs_properties_add_list(props, "align", "Text Align", OBS_COMBO_TYPE_LIST, OBS_COMBO_FORMAT_INT);
+    obs_property_list_add_int(align, "Left", static_cast<int>(Align::LEFT));
+    obs_property_list_add_int(align, "Right", static_cast<int>(Align::RIGHT));
 
     obs_properties_add_int(props, "mouse_size_x", "Mouse Size X", 8, 500, 1);
     obs_properties_add_int(props, "mouse_size_y", "Mouse Size Y", 8, 500, 1);
@@ -127,7 +136,16 @@ void set_render_settings_defaults(obs_data_t* data) {
     obs_data_set_default_int(data, "background_color", static_cast<long long>(pack_color(d.background_color)));
     obs_data_set_default_int(data, "background_rounded_corner_radius", d.background_rounded_corner_radius);
     obs_data_set_default_int(data, "background_margin", d.background_margin);
-    obs_data_set_default_int(data, "font_size", d.font_size);
+
+    obs_data_t* font_obj = obs_data_create();
+    obs_data_set_string(font_obj, "face", d.font_face.c_str());
+    obs_data_set_string(font_obj, "style", "Regular");
+    obs_data_set_int(font_obj, "size", d.font_size);
+    obs_data_set_int(font_obj, "flags", 0);
+    obs_data_set_default_obj(data, "font", font_obj);
+    obs_data_release(font_obj);
+
+    obs_data_set_default_int(data, "align", static_cast<int>(d.align));
     obs_data_set_default_int(data, "mouse_size_x", d.mouse_size_x);
     obs_data_set_default_int(data, "mouse_size_y", d.mouse_size_y);
     obs_data_set_default_bool(data, "use_custom_mouse_image", d.use_custom_mouse_image);
@@ -158,7 +176,17 @@ RenderSettings read_render_settings(obs_data_t* data) {
     s.background_rounded_corner_radius =
         static_cast<int>(obs_data_get_int(data, "background_rounded_corner_radius"));
     s.background_margin = static_cast<int>(obs_data_get_int(data, "background_margin"));
-    s.font_size = static_cast<int>(obs_data_get_int(data, "font_size"));
+
+    if (obs_data_t* font_obj = obs_data_get_obj(data, "font")) {
+        s.font_face = obs_data_get_string(font_obj, "face");
+        s.font_size = static_cast<int>(obs_data_get_int(font_obj, "size"));
+        const int flags = static_cast<int>(obs_data_get_int(font_obj, "flags"));
+        s.font_bold = (flags & OBS_FONT_BOLD) != 0;
+        s.font_italic = (flags & OBS_FONT_ITALIC) != 0;
+        obs_data_release(font_obj);
+    }
+
+    s.align = static_cast<Align>(obs_data_get_int(data, "align"));
     s.mouse_size_x = static_cast<int>(obs_data_get_int(data, "mouse_size_x"));
     s.mouse_size_y = static_cast<int>(obs_data_get_int(data, "mouse_size_y"));
     s.use_custom_mouse_image = obs_data_get_bool(data, "use_custom_mouse_image");

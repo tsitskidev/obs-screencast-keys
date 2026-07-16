@@ -11,6 +11,7 @@ namespace sk {
 
 enum class BackgroundMode { TEXT, DRAW_AREA };
 enum class MouseEventsShowMode { EVENT_HISTORY, HOLD_STATUS, EVENT_HISTORY_AND_HOLD_STATUS };
+enum class Align { LEFT, RIGHT };
 
 // NORMAL: the displayed image is swapped for the held button's image (or
 // the base image if none held). OVERLAY: the base image is always drawn,
@@ -35,9 +36,11 @@ enum class CustomMouseImageDisplayMode { NORMAL, OVERLAY };
 //     text_spacing_y) -- i.e. spacing directly controls how far older text
 //     is from the newest, in whichever direction the sign implies (negative
 //     spacing is valid and reverses the direction).
-//   - Text alignment doesn't apply anymore now that each line's x position
-//     is derived from the spacing cascade rather than measured against a
-//     shared block width.
+//   - Text align (Left/Right) picks which edge text_initial_offset_x/the
+//     cascade position refers to: Left treats it as each line's left edge
+//     (text grows rightward, as before); Right treats it as each line's
+//     right edge (text grows leftward), so all lines stay flush against a
+//     shared right edge regardless of how wide each one is.
 //   - margin/line_thickness/offset_x/offset_y (old, block-relative) are
 //     gone; background_margin controls the padding around text within its
 //     background box (both TEXT and DRAW_AREA modes). Line stroke width for
@@ -57,7 +60,17 @@ struct RenderSettings {
     int background_rounded_corner_radius = 4;
     int background_margin = 8;
 
+    // Populated from OBS's native font-picker property (obs_properties_add_font),
+    // which bundles face name, size, and bold/italic/underline/strikeout
+    // flags into one control -- resolved to an actual font file to load via
+    // FreeType by render/font-resolver.h at update() time (see
+    // screencast-keys-source.cpp).
+    std::string font_face = "Arial";
     int font_size = 24;
+    bool font_bold = false;
+    bool font_italic = false;
+
+    Align align = Align::LEFT;
 
     int mouse_size_x = 48;
     int mouse_size_y = 62;

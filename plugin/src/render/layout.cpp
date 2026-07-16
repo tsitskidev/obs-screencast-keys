@@ -9,11 +9,6 @@ namespace sk {
 
 namespace {
 
-// Stroke width for the default-drawn mouse icon's outline. Was a user
-// setting (line_thickness) before; simplified to a fixed constant based on
-// testing feedback (removed to cut down the settings surface).
-constexpr float kDefaultLineThickness = 2.0f;
-
 std::string join_modifiers(const std::vector<EventType>& mods, TargetOs os) {
     std::string result;
     for (size_t i = 0; i < mods.size(); ++i) {
@@ -52,36 +47,6 @@ struct HistoryRow {
     std::string text;
 };
 
-// Tracks the union bounding box of every element actually drawn, in
-// "raw" (pre-translation) coordinates -- elements are positioned
-// independently and may use negative offsets/spacing, so the canvas is
-// sized to whatever their union turns out to be, then everything is
-// shifted so the box's top-left lands on (0,0) (see translate_x/y below).
-// This is what makes negative text_spacing_x/y or shortcut/text offsets
-// work without clipping anything off-canvas.
-struct BoundingBox {
-    float min_x = 0, min_y = 0, max_x = 0, max_y = 0;
-    bool any = false;
-
-    void expand(float x, float y, float w, float h) {
-        if (w <= 0.0f || h <= 0.0f) {
-            return;
-        }
-        if (!any) {
-            min_x = x;
-            min_y = y;
-            max_x = x + w;
-            max_y = y + h;
-            any = true;
-            return;
-        }
-        min_x = std::min(min_x, x);
-        min_y = std::min(min_y, y);
-        max_x = std::max(max_x, x + w);
-        max_y = std::max(max_y, y + h);
-    }
-};
-
 } // namespace
 
 LayoutResult build_display_list(const EventHistory& history, const InputState& input_state,
@@ -108,25 +73,29 @@ LayoutResult build_display_list(const EventHistory& history, const InputState& i
     const bool draw_shortcut = !modifier_text.empty();
 
     // ===================================================================
-    // Pass 1: compute each element's raw (pre-translation) position and
-    // the union bounding box. The mouse icon, the shortcut (modifier) pill,
-    // and every text history line are fully independent -- none of them
-    // affect each other's position or size.
+    // The mouse icon is always drawn at literal (0,0) and is never shifted
+    // -- no global translation is applied to the canvas based on other
+    // elements' positions. (An earlier version sized the canvas to the
+    // union bounding box of every element and then translated everything
+    // so nothing clipped; that meant a negative shortcut/text offset --
+    // placing something to the left of or above the mouse -- shifted the
+    // *mouse* to make room, since the origin those elements share is the
+    // mouse's own top-left corner.) The trade-off: an element positioned
+    // with a large enough negative offset can now clip off-canvas instead
+    // of growing the canvas -- accepted so the mouse truly never moves.
     // ===================================================================
-    BoundingBox bounds;
-
     const float mouse_w = static_cast<float>(settings.mouse_size_x);
     const float mouse_h = static_cast<float>(settings.mouse_size_y);
-    if (draw_mouse) {
-        bounds.expand(0.0f, 0.0f, mouse_w, mouse_h);
-    }
 
-    const float shortcut_x = static_cast<float>(settings.shortcut_offset_x);
-    const float shortcut_y = static_cast<float>(settings.shortcut_offset_y);
-    float pill_w = 0.0f;
+    // Shortcut (modifier) pill position -- align-aware like text rows:
+    // Left treats shortcut_offset_x as the pill's left edge (grows
+    // rightward); Right treats it as the right edge (grows leftward).
+    float pill_w = 0.0f, pill_x = 0.0f, pill_y = 0.0f;
     if (draw_shortcut) {
+        const float shortcut_x = static_cast<float>(settings.shortcut_offset_x);
+        pill_y = static_cast<float>(settings.shortcut_offset_y);
         pill_w = atlas.measure_text_width(modifier_text, settings.font_size) + bg_margin * 2.0f;
-        bounds.expand(shortcut_x, shortcut_y, pill_w, row_h);
+        pill_x = settings.align == Align::RIGHT ? shortcut_x - pill_w : shortcut_x;
     }
 
     // Newest entry anchored at (text_initial_offset_x/y); the i-th-older
@@ -140,33 +109,46 @@ LayoutResult build_display_list(const EventHistory& history, const InputState& i
     std::vector<float> row_x(n), row_y(n);
     for (size_t i = 0; i < n; ++i) {
         const float age = static_cast<float>(n - 1 - i);
-        row_x[i] = text_x0 + age * spacing_x;
+        const float anchor_x = text_x0 + age * spacing_x;
+        // Left: anchor_x is each line's left edge (text grows rightward).
+        // Right: anchor_x is each line's right edge (text grows leftward),
+        // so lines of different widths stay flush against a shared edge.
+        row_x[i] = settings.align == Align::RIGHT ? anchor_x - history_rows[i].width : anchor_x;
         row_y[i] = text_y0 + age * spacing_y;
-        bounds.expand(row_x[i], row_y[i], history_rows[i].width, row_h);
     }
 
-    if (!bounds.any) {
-        bounds.min_x = bounds.min_y = 0.0f;
-        bounds.max_x = bounds.max_y = 1.0f;
+    // Canvas size: at least big enough for the (fixed-at-origin) mouse, and
+    // grown to include any element's positive extent. Elements sitting
+    // partly or fully in negative space are simply clipped, not folded into
+    // the canvas size (see the note above).
+    float canvas_w = draw_mouse ? mouse_w : 1.0f;
+    float canvas_h = draw_mouse ? mouse_h : 1.0f;
+    auto grow = [&](float x, float y, float w, float h) {
+        canvas_w = std::max(canvas_w, x + w);
+        canvas_h = std::max(canvas_h, y + h);
+    };
+    if (draw_shortcut) {
+        grow(pill_x, pill_y, pill_w, row_h);
     }
-    const float canvas_width = bounds.max_x - bounds.min_x;
-    const float canvas_height = bounds.max_y - bounds.min_y;
-    const float translate_x = -bounds.min_x;
-    const float translate_y = -bounds.min_y;
+    for (size_t i = 0; i < n; ++i) {
+        grow(row_x[i], row_y[i], history_rows[i].width, row_h);
+    }
+    canvas_w = std::max(canvas_w, 1.0f);
+    canvas_h = std::max(canvas_h, 1.0f);
 
-    result.width = std::max(1, static_cast<int>(std::ceil(canvas_width)));
-    result.height = std::max(1, static_cast<int>(std::ceil(canvas_height)));
+    result.width = std::max(1, static_cast<int>(std::ceil(canvas_w)));
+    result.height = std::max(1, static_cast<int>(std::ceil(canvas_h)));
 
     // ===================================================================
-    // Pass 2: emit draw commands at each element's translated position.
+    // Emit draw commands.
     // ===================================================================
     if (show_draw_area_background(settings)) {
         DrawCommand bg;
         bg.type = DrawCommandType::RoundedRect;
         bg.x = 0.0f;
         bg.y = 0.0f;
-        bg.w = canvas_width;
-        bg.h = canvas_height;
+        bg.w = canvas_w;
+        bg.h = canvas_h;
         bg.filled = true;
         bg.radius = clamp_radius(static_cast<float>(settings.background_rounded_corner_radius), bg.w, bg.h);
         bg.color = settings.background_color;
@@ -175,8 +157,8 @@ LayoutResult build_display_list(const EventHistory& history, const InputState& i
 
     for (size_t i = 0; i < n; ++i) {
         const HistoryRow& row = history_rows[i];
-        const float x = row_x[i] + translate_x;
-        const float y = row_y[i] + translate_y;
+        const float x = row_x[i];
+        const float y = row_y[i];
 
         if (show_text_background(settings)) {
             DrawCommand bg;
@@ -215,15 +197,12 @@ LayoutResult build_display_list(const EventHistory& history, const InputState& i
     }
 
     if (draw_mouse) {
-        const float x = translate_x;
-        const float y = translate_y;
-
         if (settings.use_custom_mouse_image) {
             auto emit_image = [&](MouseImageSlot slot) {
                 DrawCommand img;
                 img.type = DrawCommandType::Image;
-                img.x = x;
-                img.y = y;
+                img.x = 0.0f;
+                img.y = 0.0f;
                 img.w = mouse_w;
                 img.h = mouse_h;
                 img.image_slot = slot;
@@ -249,26 +228,16 @@ LayoutResult build_display_list(const EventHistory& history, const InputState& i
                 emit_image(MouseImageSlot::Base);
             }
         } else {
+            // Three filled button rectangles only -- no outer body outline
+            // (a prior version drew one; it read as a stray thin border
+            // around the icon and has been removed).
             const float body_w = mouse_w / 3.0f;
-
-            DrawCommand body;
-            body.type = DrawCommandType::RoundedRect;
-            body.x = x;
-            body.y = y;
-            body.w = mouse_w;
-            body.h = mouse_h;
-            body.filled = false;
-            body.radius = clamp_radius(mouse_w * 0.15f, mouse_w, mouse_h);
-            body.color = settings.color;
-            body.line_thickness = kDefaultLineThickness;
-            result.commands.push_back(body);
-
             const EventType buttons[3] = {EventType::MOUSE_LEFT, EventType::MOUSE_MIDDLE, EventType::MOUSE_RIGHT};
             for (int i = 0; i < 3; ++i) {
                 DrawCommand btn;
                 btn.type = DrawCommandType::RoundedRect;
-                btn.x = x + body_w * static_cast<float>(i);
-                btn.y = y;
+                btn.x = body_w * static_cast<float>(i);
+                btn.y = 0.0f;
                 btn.w = body_w;
                 btn.h = mouse_h * 0.5f;
                 btn.filled = true;
@@ -281,28 +250,28 @@ LayoutResult build_display_list(const EventHistory& history, const InputState& i
     }
 
     if (draw_shortcut) {
-        const float x = shortcut_x + translate_x;
-        const float y = shortcut_y + translate_y;
-        const bool pill_filled = show_text_background(settings) || show_draw_area_background(settings);
+        // Only fills its own background in TEXT mode -- in DRAW_AREA mode
+        // the whole-canvas background already covers this, so filling here
+        // too would draw a visibly different rect on top of it.
+        const bool pill_filled = show_text_background(settings);
 
         DrawCommand pill;
         pill.type = DrawCommandType::RoundedRect;
-        pill.x = x;
-        pill.y = y;
+        pill.x = pill_x;
+        pill.y = pill_y;
         pill.w = pill_w;
         pill.h = row_h;
         pill.filled = pill_filled;
         pill.radius = clamp_radius(row_h * 0.2f, pill.w, pill.h);
         pill.color = pill_filled ? settings.background_color : settings.color;
-        pill.line_thickness = kDefaultLineThickness;
         result.commands.push_back(pill);
 
         DrawCommand text_cmd;
         text_cmd.type = DrawCommandType::Text;
         text_cmd.text = modifier_text;
         text_cmd.font_size = settings.font_size;
-        text_cmd.x = x + bg_margin;
-        text_cmd.y = y + bg_margin + line_h * 0.8f;
+        text_cmd.x = pill_x + bg_margin;
+        text_cmd.y = pill_y + bg_margin + line_h * 0.8f;
         text_cmd.color = settings.color;
         result.commands.push_back(text_cmd);
     }

@@ -64,6 +64,7 @@ add_library(screencast-keys MODULE
     src/state/event-history.cpp
     src/state/input-state.cpp
     src/render/draw-utils.cpp
+    src/render/font-resolver.cpp
     src/render/glyph-atlas.cpp
     src/render/layout.cpp
     src/render/mouse-icon-images.cpp

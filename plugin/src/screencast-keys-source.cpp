@@ -8,6 +8,7 @@
 #include "input/event-types.h"
 #include "input/input-hook-manager.h"
 #include "render/draw-utils.h"
+#include "render/font-resolver.h"
 #include "render/glyph-atlas.h"
 #include "render/layout.h"
 #include "render/mouse-icon-images.h"
@@ -49,6 +50,14 @@ struct ScreencastKeysSource {
     GlyphAtlas atlas;
     CustomMouseImages mouse_images;
 
+    // Tracks which (face, bold, italic) combination is currently loaded into
+    // `atlas`, so source_update() only reloads (and resets the glyph cache)
+    // when the font actually changed, not on every unrelated settings edit.
+    bool font_loaded = false;
+    std::string last_font_face;
+    bool last_font_bold = false;
+    bool last_font_italic = false;
+
     // Direct analog of the Blender addon's start/stop modal operator toggle:
     // pauses this instance's capture/display without touching the shared
     // global hook (other source instances keep working) or this source's
@@ -65,6 +74,27 @@ const char* source_get_name(void*) {
 }
 
 void source_update(void* data, obs_data_t* settings);
+
+// Resolves the current settings' (face, bold, italic) to an actual font
+// file and (re)loads it into the atlas, falling back to a bundled system
+// font if resolution fails outright.
+void apply_font(ScreencastKeysSource* ctx) {
+    const ResolvedFont resolved =
+        resolve_font(ctx->settings.font_face, ctx->settings.font_bold, ctx->settings.font_italic);
+
+    if (!resolved.path.empty() &&
+        ctx->atlas.load_font(resolved.path, ctx->settings.font_bold && !resolved.exact_bold,
+                              ctx->settings.font_italic && !resolved.exact_italic)) {
+        return;
+    }
+
+    for (const char* path : kFontCandidates) {
+        if (ctx->atlas.load_font(path, ctx->settings.font_bold, ctx->settings.font_italic)) {
+            return;
+        }
+    }
+    blog(LOG_WARNING, "[screencast-keys] no system font could be loaded; text will not render");
+}
 
 bool hotkey_enable(void* data, obs_hotkey_pair_id, obs_hotkey_t*, bool pressed) {
     auto* ctx = static_cast<ScreencastKeysSource*>(data);
@@ -88,15 +118,6 @@ void* source_create(obs_data_t* settings, obs_source_t* source) {
     auto* ctx = new ScreencastKeysSource();
     ctx->source = source;
     ctx->mailbox_id = InputHookManager::instance().register_instance();
-
-    for (const char* path : kFontCandidates) {
-        if (ctx->atlas.load_font(path)) {
-            break;
-        }
-    }
-    if (!ctx->atlas.has_font()) {
-        blog(LOG_WARNING, "[screencast-keys] no system font could be loaded; text will not render");
-    }
 
     ctx->hotkey_pair = obs_hotkey_pair_register_source(source, "ScreencastKeys.Enable", "Enable Screencast Keys",
                                                         "ScreencastKeys.Disable", "Disable Screencast Keys",
@@ -210,6 +231,15 @@ void source_get_defaults(obs_data_t* settings) {
 void source_update(void* data, obs_data_t* settings) {
     auto* ctx = static_cast<ScreencastKeysSource*>(data);
     ctx->settings = read_render_settings(settings);
+
+    if (!ctx->font_loaded || ctx->settings.font_face != ctx->last_font_face ||
+        ctx->settings.font_bold != ctx->last_font_bold || ctx->settings.font_italic != ctx->last_font_italic) {
+        apply_font(ctx);
+        ctx->last_font_face = ctx->settings.font_face;
+        ctx->last_font_bold = ctx->settings.font_bold;
+        ctx->last_font_italic = ctx->settings.font_italic;
+        ctx->font_loaded = true;
+    }
 }
 
 } // namespace

@@ -44,8 +44,11 @@ public:
     GlyphAtlas& operator=(const GlyphAtlas&) = delete;
 
     // Loads a font file (TTF/OTF). Returns false if FreeType could not open
-    // or parse it. See font-paths.h for platform-default candidates.
-    bool load_font(const std::string& font_path);
+    // or parse it. If synthetic_bold/synthetic_italic are set, every glyph
+    // rasterized from this font gets FreeType's synthetic emboldening/
+    // obliquing applied (font-resolver.h sets these when it couldn't find a
+    // dedicated bold/italic file for the requested face).
+    bool load_font(const std::string& font_path, bool synthetic_bold = false, bool synthetic_italic = false);
 
     bool has_font() const { return ft_face_ != nullptr; }
 
@@ -90,6 +93,8 @@ private:
 
     void* ft_library_ = nullptr; // FT_Library
     void* ft_face_ = nullptr;    // FT_Face
+    bool synthetic_bold_ = false;
+    bool synthetic_italic_ = false;
 
     static constexpr int kAtlasSize = 1024;
     std::vector<uint8_t> atlas_cpu_; // kAtlasSize * kAtlasSize, 8bpp coverage.

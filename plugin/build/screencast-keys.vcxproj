@@ -373,6 +373,7 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
     <ClCompile Include="C:\Users\tomas\Desktop\obs-screencast-keys\plugin\src\state\event-history.cpp" />
     <ClCompile Include="C:\Users\tomas\Desktop\obs-screencast-keys\plugin\src\state\input-state.cpp" />
     <ClCompile Include="C:\Users\tomas\Desktop\obs-screencast-keys\plugin\src\render\draw-utils.cpp" />
+    <ClCompile Include="C:\Users\tomas\Desktop\obs-screencast-keys\plugin\src\render\font-resolver.cpp" />
     <ClCompile Include="C:\Users\tomas\Desktop\obs-screencast-keys\plugin\src\render\glyph-atlas.cpp" />
     <ClCompile Include="C:\Users\tomas\Desktop\obs-screencast-keys\plugin\src\render\layout.cpp" />
     <ClCompile Include="C:\Users\tomas\Desktop\obs-screencast-keys\plugin\src\render\mouse-icon-images.cpp" />

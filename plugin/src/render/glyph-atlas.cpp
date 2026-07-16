@@ -5,6 +5,7 @@
 
 #include <ft2build.h>
 #include FT_FREETYPE_H
+#include FT_SYNTHESIS_H
 
 namespace sk {
 
@@ -32,7 +33,7 @@ GlyphAtlas::~GlyphAtlas() {
     }
 }
 
-bool GlyphAtlas::load_font(const std::string& font_path) {
+bool GlyphAtlas::load_font(const std::string& font_path, bool synthetic_bold, bool synthetic_italic) {
     if (!ft_library_) {
         return false;
     }
@@ -46,6 +47,8 @@ bool GlyphAtlas::load_font(const std::string& font_path) {
         return false;
     }
     ft_face_ = new_face;
+    synthetic_bold_ = synthetic_bold;
+    synthetic_italic_ = synthetic_italic;
     reset_atlas();
     return true;
 }
@@ -65,11 +68,23 @@ const GlyphInfo* GlyphAtlas::rasterize_and_pack(int font_size, uint32_t codepoin
     FT_Face f = face(ft_face_);
     FT_Set_Pixel_Sizes(f, 0, static_cast<FT_UInt>(font_size));
 
-    if (FT_Load_Char(f, codepoint, FT_LOAD_RENDER) != 0) {
+    // Loaded without FT_LOAD_RENDER (unlike a plain lookup) so synthetic
+    // bold/italic -- which operate on the outline -- can run before the
+    // outline gets rasterized to a bitmap.
+    if (FT_Load_Char(f, codepoint, FT_LOAD_DEFAULT) != 0) {
         return nullptr;
     }
 
     FT_GlyphSlot slot = f->glyph;
+    if (synthetic_bold_) {
+        FT_GlyphSlot_Embolden(slot);
+    }
+    if (synthetic_italic_) {
+        FT_GlyphSlot_Oblique(slot);
+    }
+    if (FT_Render_Glyph(slot, FT_RENDER_MODE_NORMAL) != 0) {
+        return nullptr;
+    }
     const int glyph_w = static_cast<int>(slot->bitmap.width);
     const int glyph_h = static_cast<int>(slot->bitmap.rows);
 

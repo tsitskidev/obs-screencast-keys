@@ -28,6 +28,9 @@
     <ClCompile Include="C:\Users\tomas\Desktop\obs-screencast-keys\plugin\src\render\draw-utils.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="C:\Users\tomas\Desktop\obs-screencast-keys\plugin\src\render\font-resolver.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="C:\Users\tomas\Desktop\obs-screencast-keys\plugin\src\render\glyph-atlas.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
