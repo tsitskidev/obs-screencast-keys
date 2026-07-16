@@ -223,6 +223,13 @@ void draw_rounded_box(const DrawCommand& cmd) {
                 gs_vertex2f(outline[i].x, outline[i].y);
                 gs_vertex2f(outline[i + 1].x, outline[i + 1].y);
             }
+            // Closing wedge: without this, the fan never connects the last
+            // outline point back to the first, leaving a wedge-shaped gap
+            // cut into the shape (visible as a seam through the middle of
+            // any filled rounded rect).
+            gs_vertex2f(center.x, center.y);
+            gs_vertex2f(outline.back().x, outline.back().y);
+            gs_vertex2f(outline.front().x, outline.front().y);
         });
     } else {
         immediate_draw(GS_LINESTRIP, [&] {

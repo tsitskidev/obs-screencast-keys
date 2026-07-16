@@ -9,6 +9,11 @@ namespace sk {
 
 namespace {
 
+// Stroke width for the default-drawn mouse icon's outline. Was a user
+// setting (line_thickness) before; simplified to a fixed constant based on
+// testing feedback (removed to cut down the settings surface).
+constexpr float kDefaultLineThickness = 2.0f;
+
 std::string join_modifiers(const std::vector<EventType>& mods, TargetOs os) {
     std::string result;
     for (size_t i = 0; i < mods.size(); ++i) {
@@ -47,103 +52,136 @@ struct HistoryRow {
     std::string text;
 };
 
+// Tracks the union bounding box of every element actually drawn, in
+// "raw" (pre-translation) coordinates -- elements are positioned
+// independently and may use negative offsets/spacing, so the canvas is
+// sized to whatever their union turns out to be, then everything is
+// shifted so the box's top-left lands on (0,0) (see translate_x/y below).
+// This is what makes negative text_spacing_x/y or shortcut/text offsets
+// work without clipping anything off-canvas.
+struct BoundingBox {
+    float min_x = 0, min_y = 0, max_x = 0, max_y = 0;
+    bool any = false;
+
+    void expand(float x, float y, float w, float h) {
+        if (w <= 0.0f || h <= 0.0f) {
+            return;
+        }
+        if (!any) {
+            min_x = x;
+            min_y = y;
+            max_x = x + w;
+            max_y = y + h;
+            any = true;
+            return;
+        }
+        min_x = std::min(min_x, x);
+        min_y = std::min(min_y, y);
+        max_x = std::max(max_x, x + w);
+        max_y = std::max(max_y, y + h);
+    }
+};
+
 } // namespace
 
 LayoutResult build_display_list(const EventHistory& history, const InputState& input_state,
                                  const RenderSettings& settings, TargetOs target_os, GlyphAtlas& atlas) {
     LayoutResult result;
 
-    const float margin = static_cast<float>(settings.margin);
     const float line_h = atlas.line_height(settings.font_size);
-    const float row_h = std::max(line_h, static_cast<float>(settings.mouse_size)) + margin * 2.0f;
+    const float bg_margin = static_cast<float>(settings.background_margin);
+    const float row_h = line_h + bg_margin * 2.0f;
 
-    // --- Measure phase --------------------------------------------------
+    // History rows, oldest-first (as EventHistory::entries() returns them).
     std::vector<HistoryRow> history_rows;
     for (const HistoryEntry& entry : history.entries()) {
         HistoryRow row;
         row.text = format_history_line(entry, target_os);
-        row.width = atlas.measure_text_width(row.text, settings.font_size) + margin * 2.0f;
+        row.width = atlas.measure_text_width(row.text, settings.font_size) + bg_margin * 2.0f;
         history_rows.push_back(std::move(row));
     }
+    const size_t n = history_rows.size();
 
     const std::vector<EventType> held_modifiers = input_state.held_modifiers();
     const std::string modifier_text = held_modifiers.empty() ? "" : join_modifiers(held_modifiers, target_os);
-    const bool draw_mouse_row = show_mouse_hold_status(settings) || !modifier_text.empty();
+    const bool draw_mouse = show_mouse_hold_status(settings);
+    const bool draw_shortcut = !modifier_text.empty();
 
-    float mouse_row_width = 0.0f;
-    if (draw_mouse_row) {
-        const float mouse_w = show_mouse_hold_status(settings) ? static_cast<float>(settings.mouse_size) : 0.0f;
-        const float mod_w =
-            modifier_text.empty() ? 0.0f : atlas.measure_text_width(modifier_text, settings.font_size) + margin * 2.0f;
-        const float separator = (mouse_w > 0.0f && mod_w > 0.0f) ? margin * 2.0f : 0.0f;
-        mouse_row_width = mouse_w + separator + mod_w + margin * 2.0f;
+    // ===================================================================
+    // Pass 1: compute each element's raw (pre-translation) position and
+    // the union bounding box. The mouse icon, the shortcut (modifier) pill,
+    // and every text history line are fully independent -- none of them
+    // affect each other's position or size.
+    // ===================================================================
+    BoundingBox bounds;
+
+    const float mouse_w = static_cast<float>(settings.mouse_size_x);
+    const float mouse_h = static_cast<float>(settings.mouse_size_y);
+    if (draw_mouse) {
+        bounds.expand(0.0f, 0.0f, mouse_w, mouse_h);
     }
 
-    float content_width = mouse_row_width;
-    for (const HistoryRow& row : history_rows) {
-        content_width = std::max(content_width, row.width);
+    const float shortcut_x = static_cast<float>(settings.shortcut_offset_x);
+    const float shortcut_y = static_cast<float>(settings.shortcut_offset_y);
+    float pill_w = 0.0f;
+    if (draw_shortcut) {
+        pill_w = atlas.measure_text_width(modifier_text, settings.font_size) + bg_margin * 2.0f;
+        bounds.expand(shortcut_x, shortcut_y, pill_w, row_h);
     }
-    content_width = std::max(content_width, 1.0f);
 
-    const float history_height = static_cast<float>(history_rows.size()) * row_h;
-    const float mouse_row_height = draw_mouse_row ? row_h : 0.0f;
-    const float content_height = std::max(history_height + mouse_row_height, 1.0f);
+    // Newest entry anchored at (text_initial_offset_x/y); the i-th-older
+    // entry cascades by i * (text_spacing_x, text_spacing_y). history_rows
+    // is oldest-first, so "age" (0 = newest) counts down from the end.
+    const float text_x0 = static_cast<float>(settings.text_initial_offset_x);
+    const float text_y0 = static_cast<float>(settings.text_initial_offset_y);
+    const float spacing_x = static_cast<float>(settings.text_spacing_x);
+    const float spacing_y = static_cast<float>(settings.text_spacing_y);
 
-    const bool use_fixed_canvas = settings.canvas_size_mode == CanvasSizeMode::FIXED;
-    const float canvas_width = use_fixed_canvas ? static_cast<float>(settings.canvas_width) : content_width;
-    const float canvas_height = use_fixed_canvas ? static_cast<float>(settings.canvas_height) : content_height;
+    std::vector<float> row_x(n), row_y(n);
+    for (size_t i = 0; i < n; ++i) {
+        const float age = static_cast<float>(n - 1 - i);
+        row_x[i] = text_x0 + age * spacing_x;
+        row_y[i] = text_y0 + age * spacing_y;
+        bounds.expand(row_x[i], row_y[i], history_rows[i].width, row_h);
+    }
+
+    if (!bounds.any) {
+        bounds.min_x = bounds.min_y = 0.0f;
+        bounds.max_x = bounds.max_y = 1.0f;
+    }
+    const float canvas_width = bounds.max_x - bounds.min_x;
+    const float canvas_height = bounds.max_y - bounds.min_y;
+    const float translate_x = -bounds.min_x;
+    const float translate_y = -bounds.min_y;
 
     result.width = std::max(1, static_cast<int>(std::ceil(canvas_width)));
     result.height = std::max(1, static_cast<int>(std::ceil(canvas_height)));
 
-    // offset_x/offset_y only mean anything in FIXED mode -- in AUTO mode the
-    // canvas exactly matches the content, so there is no room to offset
-    // within it; OBS's own scene-item transform is the positioning
-    // mechanism there instead.
-    const float offset_x = use_fixed_canvas ? static_cast<float>(settings.offset_x) : 0.0f;
-    const float offset_y = use_fixed_canvas ? static_cast<float>(settings.offset_y) : 0.0f;
-
-    auto align_x = [&](float row_width) -> float {
-        switch (settings.align) {
-            case Align::LEFT:
-                return offset_x;
-            case Align::CENTER:
-                return (canvas_width - row_width) * 0.5f;
-            case Align::RIGHT:
-                return canvas_width - row_width - offset_x;
-        }
-        return 0.0f;
-    };
-
-    // Bottom-anchored, matching the Blender addon's stacking: mouse/modifier
-    // row nearest the bottom, history growing upward above it.
-    const float base_y = canvas_height - content_height - offset_y;
-
+    // ===================================================================
+    // Pass 2: emit draw commands at each element's translated position.
+    // ===================================================================
     if (show_draw_area_background(settings)) {
         DrawCommand bg;
         bg.type = DrawCommandType::RoundedRect;
         bg.x = 0.0f;
-        bg.y = base_y;
-        bg.w = content_width;
-        bg.h = content_height;
+        bg.y = 0.0f;
+        bg.w = canvas_width;
+        bg.h = canvas_height;
         bg.filled = true;
         bg.radius = clamp_radius(static_cast<float>(settings.background_rounded_corner_radius), bg.w, bg.h);
         bg.color = settings.background_color;
         result.commands.push_back(bg);
     }
 
-    float y = base_y;
-
-    // History, oldest first (top of the stack), newest last (bottom row,
-    // immediately above the mouse/modifier row) -- matches
-    // _draw_event_history_layer's event_history[::-1] iteration order.
-    for (const HistoryRow& row : history_rows) {
-        const float row_x = align_x(row.width);
+    for (size_t i = 0; i < n; ++i) {
+        const HistoryRow& row = history_rows[i];
+        const float x = row_x[i] + translate_x;
+        const float y = row_y[i] + translate_y;
 
         if (show_text_background(settings)) {
             DrawCommand bg;
             bg.type = DrawCommandType::RoundedRect;
-            bg.x = row_x;
+            bg.x = x;
             bg.y = y;
             bg.w = row.width;
             bg.h = row_h;
@@ -153,14 +191,14 @@ LayoutResult build_display_list(const EventHistory& history, const InputState& i
             result.commands.push_back(bg);
         }
 
-        const float baseline_y = y + margin + line_h * 0.8f;
+        const float baseline_y = y + bg_margin + line_h * 0.8f;
 
         if (settings.shadow) {
             DrawCommand shadow_cmd;
             shadow_cmd.type = DrawCommandType::Text;
             shadow_cmd.text = row.text;
             shadow_cmd.font_size = settings.font_size;
-            shadow_cmd.x = row_x + margin + 2.0f;
+            shadow_cmd.x = x + bg_margin + 2.0f;
             shadow_cmd.y = baseline_y + 2.0f;
             shadow_cmd.color = settings.shadow_color;
             result.commands.push_back(shadow_cmd);
@@ -170,118 +208,103 @@ LayoutResult build_display_list(const EventHistory& history, const InputState& i
         text_cmd.type = DrawCommandType::Text;
         text_cmd.text = row.text;
         text_cmd.font_size = settings.font_size;
-        text_cmd.x = row_x + margin;
+        text_cmd.x = x + bg_margin;
         text_cmd.y = baseline_y;
         text_cmd.color = settings.color;
         result.commands.push_back(text_cmd);
-
-        y += row_h;
     }
 
-    // Mouse hold status + modifier pill, bottom row.
-    if (draw_mouse_row) {
-        const float row_x = align_x(mouse_row_width);
-        float x = row_x + margin;
+    if (draw_mouse) {
+        const float x = translate_x;
+        const float y = translate_y;
 
-        if (show_mouse_hold_status(settings)) {
-            const float mouse_w = static_cast<float>(settings.mouse_size);
+        if (settings.use_custom_mouse_image) {
+            auto emit_image = [&](MouseImageSlot slot) {
+                DrawCommand img;
+                img.type = DrawCommandType::Image;
+                img.x = x;
+                img.y = y;
+                img.w = mouse_w;
+                img.h = mouse_h;
+                img.image_slot = slot;
+                result.commands.push_back(img);
+            };
 
-            if (settings.use_custom_mouse_image) {
-                // Simplified vs. the Blender addon's separate custom_mouse_size
-                // width/height: custom images use a square mouse_w x mouse_w
-                // footprint here rather than an independently configurable size.
-                const float mouse_h = mouse_w;
-                auto emit_image = [&](MouseImageSlot slot) {
-                    DrawCommand img;
-                    img.type = DrawCommandType::Image;
-                    img.x = x;
-                    img.y = y;
-                    img.w = mouse_w;
-                    img.h = mouse_h;
-                    img.image_slot = slot;
-                    result.commands.push_back(img);
-                };
+            const bool left_held = input_state.is_mouse_button_held(EventType::MOUSE_LEFT);
+            const bool right_held = input_state.is_mouse_button_held(EventType::MOUSE_RIGHT);
+            const bool middle_held = input_state.is_mouse_button_held(EventType::MOUSE_MIDDLE);
 
-                const bool left_held = input_state.is_mouse_button_held(EventType::MOUSE_LEFT);
-                const bool right_held = input_state.is_mouse_button_held(EventType::MOUSE_RIGHT);
-                const bool middle_held = input_state.is_mouse_button_held(EventType::MOUSE_MIDDLE);
-
-                if (settings.custom_mouse_image_display_mode == CustomMouseImageDisplayMode::OVERLAY) {
-                    emit_image(MouseImageSlot::Base);
-                    if (left_held) emit_image(MouseImageSlot::Left);
-                    if (right_held) emit_image(MouseImageSlot::Right);
-                    if (middle_held) emit_image(MouseImageSlot::Middle);
-                } else if (left_held) {
-                    emit_image(MouseImageSlot::Left);
-                } else if (right_held) {
-                    emit_image(MouseImageSlot::Right);
-                } else if (middle_held) {
-                    emit_image(MouseImageSlot::Middle);
-                } else {
-                    emit_image(MouseImageSlot::Base);
-                }
-
-                x += mouse_w + margin * 2.0f;
+            if (settings.custom_mouse_image_display_mode == CustomMouseImageDisplayMode::OVERLAY) {
+                emit_image(MouseImageSlot::Base);
+                if (left_held) emit_image(MouseImageSlot::Left);
+                if (right_held) emit_image(MouseImageSlot::Right);
+                if (middle_held) emit_image(MouseImageSlot::Middle);
+            } else if (left_held) {
+                emit_image(MouseImageSlot::Left);
+            } else if (right_held) {
+                emit_image(MouseImageSlot::Right);
+            } else if (middle_held) {
+                emit_image(MouseImageSlot::Middle);
             } else {
-                const float mouse_h = mouse_w * 1.3f;
-                const float body_w = mouse_w / 3.0f;
+                emit_image(MouseImageSlot::Base);
+            }
+        } else {
+            const float body_w = mouse_w / 3.0f;
 
-                DrawCommand body;
-                body.type = DrawCommandType::RoundedRect;
-                body.x = x;
-                body.y = y;
-                body.w = mouse_w;
-                body.h = mouse_h;
-                body.filled = false;
-                body.radius = clamp_radius(mouse_w * 0.15f, mouse_w, mouse_h);
-                body.color = settings.color;
-                body.line_thickness = settings.line_thickness;
-                result.commands.push_back(body);
+            DrawCommand body;
+            body.type = DrawCommandType::RoundedRect;
+            body.x = x;
+            body.y = y;
+            body.w = mouse_w;
+            body.h = mouse_h;
+            body.filled = false;
+            body.radius = clamp_radius(mouse_w * 0.15f, mouse_w, mouse_h);
+            body.color = settings.color;
+            body.line_thickness = kDefaultLineThickness;
+            result.commands.push_back(body);
 
-                const EventType buttons[3] = {EventType::MOUSE_LEFT, EventType::MOUSE_MIDDLE, EventType::MOUSE_RIGHT};
-                for (int i = 0; i < 3; ++i) {
-                    DrawCommand btn;
-                    btn.type = DrawCommandType::RoundedRect;
-                    btn.x = x + body_w * static_cast<float>(i);
-                    btn.y = y;
-                    btn.w = body_w;
-                    btn.h = mouse_h * 0.5f;
-                    btn.filled = true;
-                    btn.radius = clamp_radius(mouse_w * 0.1f, btn.w, btn.h);
-                    btn.color =
-                        input_state.is_mouse_button_held(buttons[i]) ? settings.color : faded(settings.color, 0.35f);
-                    result.commands.push_back(btn);
-                }
-
-                x += mouse_w + margin * 2.0f;
+            const EventType buttons[3] = {EventType::MOUSE_LEFT, EventType::MOUSE_MIDDLE, EventType::MOUSE_RIGHT};
+            for (int i = 0; i < 3; ++i) {
+                DrawCommand btn;
+                btn.type = DrawCommandType::RoundedRect;
+                btn.x = x + body_w * static_cast<float>(i);
+                btn.y = y;
+                btn.w = body_w;
+                btn.h = mouse_h * 0.5f;
+                btn.filled = true;
+                btn.radius = clamp_radius(mouse_w * 0.1f, btn.w, btn.h);
+                btn.color =
+                    input_state.is_mouse_button_held(buttons[i]) ? settings.color : faded(settings.color, 0.35f);
+                result.commands.push_back(btn);
             }
         }
+    }
 
-        if (!modifier_text.empty()) {
-            const float mod_w = atlas.measure_text_width(modifier_text, settings.font_size) + margin * 2.0f;
-            const bool pill_filled = show_text_background(settings) || show_draw_area_background(settings);
+    if (draw_shortcut) {
+        const float x = shortcut_x + translate_x;
+        const float y = shortcut_y + translate_y;
+        const bool pill_filled = show_text_background(settings) || show_draw_area_background(settings);
 
-            DrawCommand pill;
-            pill.type = DrawCommandType::RoundedRect;
-            pill.x = x;
-            pill.y = y;
-            pill.w = mod_w;
-            pill.h = row_h;
-            pill.filled = pill_filled;
-            pill.radius = clamp_radius(row_h * 0.2f, pill.w, pill.h);
-            pill.color = pill_filled ? settings.background_color : settings.color;
-            pill.line_thickness = settings.line_thickness;
-            result.commands.push_back(pill);
+        DrawCommand pill;
+        pill.type = DrawCommandType::RoundedRect;
+        pill.x = x;
+        pill.y = y;
+        pill.w = pill_w;
+        pill.h = row_h;
+        pill.filled = pill_filled;
+        pill.radius = clamp_radius(row_h * 0.2f, pill.w, pill.h);
+        pill.color = pill_filled ? settings.background_color : settings.color;
+        pill.line_thickness = kDefaultLineThickness;
+        result.commands.push_back(pill);
 
-            DrawCommand text_cmd;
-            text_cmd.type = DrawCommandType::Text;
-            text_cmd.text = modifier_text;
-            text_cmd.font_size = settings.font_size;
-            text_cmd.x = x + margin;
-            text_cmd.y = y + margin + line_h * 0.8f;
-            text_cmd.color = settings.color;
-            result.commands.push_back(text_cmd);
-        }
+        DrawCommand text_cmd;
+        text_cmd.type = DrawCommandType::Text;
+        text_cmd.text = modifier_text;
+        text_cmd.font_size = settings.font_size;
+        text_cmd.x = x + bg_margin;
+        text_cmd.y = y + bg_margin + line_h * 0.8f;
+        text_cmd.color = settings.color;
+        result.commands.push_back(text_cmd);
     }
 
     return result;

@@ -21,14 +21,14 @@ struct LayoutResult {
 // measurement functions, which stage glyph rasterization (FreeType, CPU
 // only) for later GPU upload but never touch a gs_texture_t themselves.
 //
-// Port of draw_area_size() and the _draw_*_layer() family in ops.py. The
-// "last operator" layer is dropped (no OBS analog); origin/region-relative
-// positioning is replaced by alignment within either the auto-sized
-// bounding box or a fixed canvas (see RenderSettings::canvas_size_mode).
-// Some Blender-specific layout constants (separator width tied to mouse
-// width, exact centering ratios) are simplified rather than reproduced
-// pixel-for-pixel, since they were tuned for a floating viewport overlay,
-// not a fixed-canvas video source.
+// Port of draw_area_size() and the _draw_*_layer() family in ops.py, with
+// substantial departures from the original based on testing feedback (see
+// settings.h for the full rationale): the mouse icon, the shortcut
+// (modifier) pill, and the text history are three fully independent
+// elements, each with its own anchor -- none of them push or resize each
+// other. The canvas is the union bounding box of whichever elements are
+// shown, safely translated so negative offsets/spacing never clip content
+// off-canvas. The "last operator" layer is dropped (no OBS analog).
 LayoutResult build_display_list(const EventHistory& history, const InputState& input_state,
                                  const RenderSettings& settings, TargetOs target_os, GlyphAtlas& atlas);
 

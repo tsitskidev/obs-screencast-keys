@@ -28,6 +28,7 @@ bool background_modified(obs_properties_t* props, obs_property_t*, obs_data_t* s
     obs_property_set_visible(obs_properties_get(props, "background_mode"), on);
     obs_property_set_visible(obs_properties_get(props, "background_color"), on);
     obs_property_set_visible(obs_properties_get(props, "background_rounded_corner_radius"), on);
+    obs_property_set_visible(obs_properties_get(props, "background_margin"), on);
     return true;
 }
 
@@ -64,6 +65,7 @@ obs_properties_t* build_render_settings_properties() {
     obs_property_list_add_int(background_mode, "Draw Area", static_cast<int>(BackgroundMode::DRAW_AREA));
     obs_properties_add_color_alpha(props, "background_color", "Background Color");
     obs_properties_add_int(props, "background_rounded_corner_radius", "Background Corner Radius", 0, 100, 1);
+    obs_properties_add_int(props, "background_margin", "Background Margin", 0, 200, 1);
     obs_property_set_modified_callback(background, background_modified);
 
     obs_properties_add_int(props, "font_size", "Font Size", 6, 200, 1);
@@ -88,16 +90,15 @@ obs_properties_t* build_render_settings_properties() {
                              nullptr);
     obs_property_set_modified_callback(use_custom_mouse_image, use_custom_mouse_image_modified);
 
-    obs_property_t* align =
-        obs_properties_add_list(props, "align", "Text Align", OBS_COMBO_TYPE_LIST, OBS_COMBO_FORMAT_INT);
-    obs_property_list_add_int(align, "Left", static_cast<int>(Align::LEFT));
-    obs_property_list_add_int(align, "Center", static_cast<int>(Align::CENTER));
-    obs_property_list_add_int(align, "Right", static_cast<int>(Align::RIGHT));
+    obs_properties_add_int(props, "shortcut_offset_x", "Shortcut (Modifier Keys) Offset X", -4000, 4000, 1);
+    obs_properties_add_int(props, "shortcut_offset_y", "Shortcut (Modifier Keys) Offset Y", -4000, 4000, 1);
 
     obs_properties_add_int(props, "text_initial_offset_x", "Text Initial Offset X", -4000, 4000, 1);
     obs_properties_add_int(props, "text_initial_offset_y", "Text Initial Offset Y", -4000, 4000, 1);
-    obs_properties_add_int(props, "text_spacing_x", "Text Spacing X", 0, 200, 1);
-    obs_properties_add_int(props, "text_spacing_y", "Text Spacing Y", 0, 200, 1);
+    obs_properties_add_int(props, "text_spacing_x", "Text Spacing X (older entries cascade by this much)", -500, 500,
+                            1);
+    obs_properties_add_int(props, "text_spacing_y", "Text Spacing Y (older entries cascade by this much)", -500, 500,
+                            1);
 
     obs_properties_add_float(props, "display_time", "Display Time (seconds)", 0.5, 10.0, 0.1);
     obs_properties_add_int(props, "max_event_history", "Max Event History", 1, 50, 1);
@@ -125,13 +126,15 @@ void set_render_settings_defaults(obs_data_t* data) {
     obs_data_set_default_int(data, "background_mode", static_cast<int>(d.background_mode));
     obs_data_set_default_int(data, "background_color", static_cast<long long>(pack_color(d.background_color)));
     obs_data_set_default_int(data, "background_rounded_corner_radius", d.background_rounded_corner_radius);
+    obs_data_set_default_int(data, "background_margin", d.background_margin);
     obs_data_set_default_int(data, "font_size", d.font_size);
     obs_data_set_default_int(data, "mouse_size_x", d.mouse_size_x);
     obs_data_set_default_int(data, "mouse_size_y", d.mouse_size_y);
     obs_data_set_default_bool(data, "use_custom_mouse_image", d.use_custom_mouse_image);
     obs_data_set_default_int(data, "custom_mouse_image_display_mode",
                               static_cast<int>(d.custom_mouse_image_display_mode));
-    obs_data_set_default_int(data, "align", static_cast<int>(d.align));
+    obs_data_set_default_int(data, "shortcut_offset_x", d.shortcut_offset_x);
+    obs_data_set_default_int(data, "shortcut_offset_y", d.shortcut_offset_y);
     obs_data_set_default_int(data, "text_initial_offset_x", d.text_initial_offset_x);
     obs_data_set_default_int(data, "text_initial_offset_y", d.text_initial_offset_y);
     obs_data_set_default_int(data, "text_spacing_x", d.text_spacing_x);
@@ -154,6 +157,7 @@ RenderSettings read_render_settings(obs_data_t* data) {
     s.background_color = unpack_color(static_cast<uint32_t>(obs_data_get_int(data, "background_color")));
     s.background_rounded_corner_radius =
         static_cast<int>(obs_data_get_int(data, "background_rounded_corner_radius"));
+    s.background_margin = static_cast<int>(obs_data_get_int(data, "background_margin"));
     s.font_size = static_cast<int>(obs_data_get_int(data, "font_size"));
     s.mouse_size_x = static_cast<int>(obs_data_get_int(data, "mouse_size_x"));
     s.mouse_size_y = static_cast<int>(obs_data_get_int(data, "mouse_size_y"));
@@ -164,7 +168,8 @@ RenderSettings read_render_settings(obs_data_t* data) {
     s.custom_mouse_image_left = obs_data_get_string(data, "custom_mouse_image_left");
     s.custom_mouse_image_right = obs_data_get_string(data, "custom_mouse_image_right");
     s.custom_mouse_image_middle = obs_data_get_string(data, "custom_mouse_image_middle");
-    s.align = static_cast<Align>(obs_data_get_int(data, "align"));
+    s.shortcut_offset_x = static_cast<int>(obs_data_get_int(data, "shortcut_offset_x"));
+    s.shortcut_offset_y = static_cast<int>(obs_data_get_int(data, "shortcut_offset_y"));
     s.text_initial_offset_x = static_cast<int>(obs_data_get_int(data, "text_initial_offset_x"));
     s.text_initial_offset_y = static_cast<int>(obs_data_get_int(data, "text_initial_offset_y"));
     s.text_spacing_x = static_cast<int>(obs_data_get_int(data, "text_spacing_x"));

@@ -9,7 +9,6 @@
 
 namespace sk {
 
-enum class Align { LEFT, CENTER, RIGHT };
 enum class BackgroundMode { TEXT, DRAW_AREA };
 enum class MouseEventsShowMode { EVENT_HISTORY, HOLD_STATUS, EVENT_HISTORY_AND_HOLD_STATUS };
 
@@ -22,17 +21,28 @@ enum class CustomMouseImageDisplayMode { NORMAL, OVERLAY };
 // Mirrors SK_Preferences (preferences.py), with the following deliberate
 // departures based on real-world testing feedback:
 //   - The canvas is always auto-sized to content (no Blender-style fixed
-//     canvas option) -- it was cut for being redundant complexity once the
-//     mouse block and text block became independently positioned (below).
-//   - The mouse/modifier block is anchored at a fixed position (0,0) and
-//     never moves based on the text history's size -- previously it sat at
-//     the bottom of the whole content block, so it visibly shifted up/down
-//     as history lines appeared/expired. text_initial_offset_x/y position
-//     the (separate) text block instead, so the two never interact.
-//   - margin/line_thickness/offset_x/offset_y are gone; text_spacing_x/y
-//     (gap between/around history lines) replace margin's role for text,
-//     and line stroke width for the default-drawn mouse icon is now a fixed
-//     constant (kDefaultLineThickness in layout.cpp) rather than configurable.
+//     canvas option).
+//   - The mouse icon, the held-modifier ("shortcut") pill, and the text
+//     history are three fully independent elements, each with its own
+//     anchor: the mouse icon is fixed at (0,0); the shortcut pill is at
+//     (shortcut_offset_x, shortcut_offset_y); the text history starts at
+//     (text_initial_offset_x, text_initial_offset_y). None of them push or
+//     resize each other. The overall canvas is just the bounding box of
+//     whichever elements are actually shown (and safely includes negative
+//     spacing/offsets -- see layout.cpp's translation pass).
+//   - Each history entry's position is the newest entry at the text anchor,
+//     with the i-th older entry offset by i * (text_spacing_x,
+//     text_spacing_y) -- i.e. spacing directly controls how far older text
+//     is from the newest, in whichever direction the sign implies (negative
+//     spacing is valid and reverses the direction).
+//   - Text alignment doesn't apply anymore now that each line's x position
+//     is derived from the spacing cascade rather than measured against a
+//     shared block width.
+//   - margin/line_thickness/offset_x/offset_y (old, block-relative) are
+//     gone; background_margin controls the padding around text within its
+//     background box (both TEXT and DRAW_AREA modes). Line stroke width for
+//     the default-drawn mouse icon is now a fixed constant
+//     (kDefaultLineThickness in layout.cpp) rather than configurable.
 //   - mouse_size split into independent X/Y so the icon isn't forced into a
 //     fixed aspect ratio.
 struct RenderSettings {
@@ -45,6 +55,7 @@ struct RenderSettings {
     BackgroundMode background_mode = BackgroundMode::DRAW_AREA;
     Color background_color{0.0f, 0.0f, 0.0f, 0.5f};
     int background_rounded_corner_radius = 4;
+    int background_margin = 8;
 
     int font_size = 24;
 
@@ -58,17 +69,18 @@ struct RenderSettings {
     std::string custom_mouse_image_right;
     std::string custom_mouse_image_middle;
 
-    Align align = Align::LEFT;
+    // Where the held-modifier ("Ctrl"/"Shift"/...) pill is drawn, independent
+    // of both the mouse icon and the text history.
+    int shortcut_offset_x = 60;
+    int shortcut_offset_y = 0;
 
-    // Where the text history block starts (independent of the mouse block,
-    // which is always anchored at (0,0)).
+    // Where the newest history entry is drawn; older entries cascade from
+    // here by (i * text_spacing_x, i * text_spacing_y). Any of the four may
+    // be negative.
     int text_initial_offset_x = 0;
-    int text_initial_offset_y = 0;
-    // Gap applied around/between history lines: text_spacing_y is the
-    // vertical gap between consecutive lines; text_spacing_x is the
-    // horizontal padding applied to each line's text/background.
-    int text_spacing_x = 4;
-    int text_spacing_y = 4;
+    int text_initial_offset_y = 70;
+    int text_spacing_x = 0;
+    int text_spacing_y = 30;
 
     double display_time = 3.0;
     int max_event_history = 5;
@@ -103,8 +115,8 @@ inline bool show_draw_area_background(const RenderSettings& s) {
 
 // Builds the obs_properties_t UI mirroring SK_Preferences.draw(), with
 // modified-callbacks to show/hide dependent fields (shadow color, background
-// color/mode/radius) the same way the Blender panel only shows them when
-// their parent toggle is on.
+// color/mode/radius/margin) the same way the Blender panel only shows them
+// when their parent toggle is on.
 obs_properties_t* build_render_settings_properties();
 
 // Registers RenderSettings' defaults into `data` (obs_source_info::get_defaults).
