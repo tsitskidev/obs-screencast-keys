@@ -35,18 +35,41 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(uiohook)
 
+# --- FreeType -----------------------------------------------------------------
+# Pinned to release tag 2.13.3. All optional third-party codecs (zlib/bzip2/
+# png/harfbuzz/brotli) are disabled -- we only ever rasterize plain TTF/OTF
+# glyphs, so FreeType's own bundled minimal decoders are sufficient and this
+# keeps the dependency graph free of anything needing its own FetchContent.
+set(FT_DISABLE_ZLIB TRUE CACHE BOOL "" FORCE)
+set(FT_DISABLE_BZIP2 TRUE CACHE BOOL "" FORCE)
+set(FT_DISABLE_PNG TRUE CACHE BOOL "" FORCE)
+set(FT_DISABLE_HARFBUZZ TRUE CACHE BOOL "" FORCE)
+set(FT_DISABLE_BROTLI TRUE CACHE BOOL "" FORCE)
+FetchContent_Declare(
+    freetype
+    GIT_REPOSITORY https://github.com/freetype/freetype.git
+    GIT_TAG 534ad3456055ee1f65ecde3bcf22a656a31514d1 # VER-2-13-3
+    GIT_SHALLOW TRUE
+)
+FetchContent_MakeAvailable(freetype)
+
 # --- plugin -------------------------------------------------------------------
 add_library(screencast-keys MODULE
     src/plugin-main.cpp
     src/screencast-keys-source.cpp
+    src/settings.cpp
     src/input/event-types.cpp
     src/input/global-input-hook.cpp
     src/input/input-hook-manager.cpp
     src/state/event-history.cpp
     src/state/input-state.cpp
+    src/render/draw-utils.cpp
+    src/render/glyph-atlas.cpp
+    src/render/layout.cpp
+    src/render/mouse-icon-images.cpp
 )
 
-target_link_libraries(screencast-keys PRIVATE obs-libobs uiohook)
+target_link_libraries(screencast-keys PRIVATE obs-libobs uiohook freetype)
 
 set_target_properties(screencast-keys PROPERTIES
     PREFIX ""

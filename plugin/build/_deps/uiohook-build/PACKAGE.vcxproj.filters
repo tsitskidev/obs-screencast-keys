@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <CustomBuild Include="C:\Users\tomas\Desktop\obs-screencast-keys\plugin\build\CMakeFiles\d86c73cd8992a21dc12d5d3b36e3956d\PACKAGE_force.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="CMake Rules">
+      <UniqueIdentifier>{290E1028-D3D2-374C-98DD-362B5167B277}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

@@ -86,7 +86,7 @@
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>C:\Users\tomas\Desktop\obs-screencast-keys\plugin\build\_deps\uiohook-src\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\tomas\Desktop\obs-screencast-keys\plugin\build\_deps\uiohook-src\include;C:\Users\tomas\Desktop\obs-screencast-keys\plugin\build\_deps\freetype-build\include;C:\Users\tomas\Desktop\obs-screencast-keys\plugin\build\_deps\freetype-src\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalOptions>%(AdditionalOptions) /external:I "C:/Users/tomas/Desktop/obs-screencast-keys/plugin/../build-deps/obs-studio/libobs" /external:I "C:/Users/tomas/Desktop/obs-screencast-keys/plugin/../build-deps/obs-studio/build_x64/config"</AdditionalOptions>
       <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -111,10 +111,10 @@
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_DEBUG;_WINDOWS;CMAKE_INTDIR=\"Debug\";screencast_keys_EXPORTS</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>C:\Users\tomas\Desktop\obs-screencast-keys\plugin\build\_deps\uiohook-src\include;C:\Users\tomas\Desktop\obs-screencast-keys\plugin\..\build-deps\obs-studio\libobs;C:\Users\tomas\Desktop\obs-screencast-keys\plugin\..\build-deps\obs-studio\build_x64\config;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\tomas\Desktop\obs-screencast-keys\plugin\build\_deps\uiohook-src\include;C:\Users\tomas\Desktop\obs-screencast-keys\plugin\build\_deps\freetype-build\include;C:\Users\tomas\Desktop\obs-screencast-keys\plugin\build\_deps\freetype-src\include;C:\Users\tomas\Desktop\obs-screencast-keys\plugin\..\build-deps\obs-studio\libobs;C:\Users\tomas\Desktop\obs-screencast-keys\plugin\..\build-deps\obs-studio\build_x64\config;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Midl>
-      <AdditionalIncludeDirectories>C:\Users\tomas\Desktop\obs-screencast-keys\plugin\build\_deps\uiohook-src\include;C:\Users\tomas\Desktop\obs-screencast-keys\plugin\..\build-deps\obs-studio\libobs;C:\Users\tomas\Desktop\obs-screencast-keys\plugin\..\build-deps\obs-studio\build_x64\config;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\tomas\Desktop\obs-screencast-keys\plugin\build\_deps\uiohook-src\include;C:\Users\tomas\Desktop\obs-screencast-keys\plugin\build\_deps\freetype-build\include;C:\Users\tomas\Desktop\obs-screencast-keys\plugin\build\_deps\freetype-src\include;C:\Users\tomas\Desktop\obs-screencast-keys\plugin\..\build-deps\obs-studio\libobs;C:\Users\tomas\Desktop\obs-screencast-keys\plugin\..\build-deps\obs-studio\build_x64\config;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
       <HeaderFileName>%(Filename).h</HeaderFileName>
       <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
@@ -122,7 +122,7 @@
       <ProxyFileName>%(Filename)_p.c</ProxyFileName>
     </Midl>
     <Link>
-      <AdditionalDependencies>C:\Users\tomas\Desktop\obs-screencast-keys\plugin\..\build-deps\obs-studio\build_x64\libobs\RelWithDebInfo\obs.lib;_deps\uiohook-build\Debug\uiohook.lib;C:\Program Files (x86)\Windows Kits\10\Lib\10.0.22621.0\um\x64\AdvAPI32.Lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
+      <AdditionalDependencies>C:\Users\tomas\Desktop\obs-screencast-keys\plugin\..\build-deps\obs-studio\build_x64\libobs\RelWithDebInfo\obs.lib;_deps\uiohook-build\Debug\uiohook.lib;_deps\freetype-build\Debug\freetyped.lib;C:\Program Files (x86)\Windows Kits\10\Lib\10.0.22621.0\um\x64\AdvAPI32.Lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
       <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalOptions>%(AdditionalOptions) /machine:x64</AdditionalOptions>
       <DataExecutionPrevention></DataExecutionPrevention>
@@ -141,7 +141,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>C:\Users\tomas\Desktop\obs-screencast-keys\plugin\build\_deps\uiohook-src\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\tomas\Desktop\obs-screencast-keys\plugin\build\_deps\uiohook-src\include;C:\Users\tomas\Desktop\obs-screencast-keys\plugin\build\_deps\freetype-build\include;C:\Users\tomas\Desktop\obs-screencast-keys\plugin\build\_deps\freetype-src\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalOptions>%(AdditionalOptions) /external:I "C:/Users/tomas/Desktop/obs-screencast-keys/plugin/../build-deps/obs-studio/libobs" /external:I "C:/Users/tomas/Desktop/obs-screencast-keys/plugin/../build-deps/obs-studio/build_x64/config"</AdditionalOptions>
       <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
       <BasicRuntimeChecks>Default</BasicRuntimeChecks>
@@ -167,10 +167,10 @@
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;CMAKE_INTDIR=\"Release\";screencast_keys_EXPORTS</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>C:\Users\tomas\Desktop\obs-screencast-keys\plugin\build\_deps\uiohook-src\include;C:\Users\tomas\Desktop\obs-screencast-keys\plugin\..\build-deps\obs-studio\libobs;C:\Users\tomas\Desktop\obs-screencast-keys\plugin\..\build-deps\obs-studio\build_x64\config;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\tomas\Desktop\obs-screencast-keys\plugin\build\_deps\uiohook-src\include;C:\Users\tomas\Desktop\obs-screencast-keys\plugin\build\_deps\freetype-build\include;C:\Users\tomas\Desktop\obs-screencast-keys\plugin\build\_deps\freetype-src\include;C:\Users\tomas\Desktop\obs-screencast-keys\plugin\..\build-deps\obs-studio\libobs;C:\Users\tomas\Desktop\obs-screencast-keys\plugin\..\build-deps\obs-studio\build_x64\config;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Midl>
-      <AdditionalIncludeDirectories>C:\Users\tomas\Desktop\obs-screencast-keys\plugin\build\_deps\uiohook-src\include;C:\Users\tomas\Desktop\obs-screencast-keys\plugin\..\build-deps\obs-studio\libobs;C:\Users\tomas\Desktop\obs-screencast-keys\plugin\..\build-deps\obs-studio\build_x64\config;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\tomas\Desktop\obs-screencast-keys\plugin\build\_deps\uiohook-src\include;C:\Users\tomas\Desktop\obs-screencast-keys\plugin\build\_deps\freetype-build\include;C:\Users\tomas\Desktop\obs-screencast-keys\plugin\build\_deps\freetype-src\include;C:\Users\tomas\Desktop\obs-screencast-keys\plugin\..\build-deps\obs-studio\libobs;C:\Users\tomas\Desktop\obs-screencast-keys\plugin\..\build-deps\obs-studio\build_x64\config;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
       <HeaderFileName>%(Filename).h</HeaderFileName>
       <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
@@ -178,7 +178,7 @@
       <ProxyFileName>%(Filename)_p.c</ProxyFileName>
     </Midl>
     <Link>
-      <AdditionalDependencies>C:\Users\tomas\Desktop\obs-screencast-keys\plugin\..\build-deps\obs-studio\build_x64\libobs\RelWithDebInfo\obs.lib;_deps\uiohook-build\Release\uiohook.lib;C:\Program Files (x86)\Windows Kits\10\Lib\10.0.22621.0\um\x64\AdvAPI32.Lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
+      <AdditionalDependencies>C:\Users\tomas\Desktop\obs-screencast-keys\plugin\..\build-deps\obs-studio\build_x64\libobs\RelWithDebInfo\obs.lib;_deps\uiohook-build\Release\uiohook.lib;_deps\freetype-build\Release\freetype.lib;C:\Program Files (x86)\Windows Kits\10\Lib\10.0.22621.0\um\x64\AdvAPI32.Lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
       <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalOptions>%(AdditionalOptions) /machine:x64</AdditionalOptions>
       <DataExecutionPrevention></DataExecutionPrevention>
@@ -197,7 +197,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>C:\Users\tomas\Desktop\obs-screencast-keys\plugin\build\_deps\uiohook-src\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\tomas\Desktop\obs-screencast-keys\plugin\build\_deps\uiohook-src\include;C:\Users\tomas\Desktop\obs-screencast-keys\plugin\build\_deps\freetype-build\include;C:\Users\tomas\Desktop\obs-screencast-keys\plugin\build\_deps\freetype-src\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalOptions>%(AdditionalOptions) /external:I "C:/Users/tomas/Desktop/obs-screencast-keys/plugin/../build-deps/obs-studio/libobs" /external:I "C:/Users/tomas/Desktop/obs-screencast-keys/plugin/../build-deps/obs-studio/build_x64/config"</AdditionalOptions>
       <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
       <BasicRuntimeChecks>Default</BasicRuntimeChecks>
@@ -223,10 +223,10 @@
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;CMAKE_INTDIR=\"MinSizeRel\";screencast_keys_EXPORTS</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>C:\Users\tomas\Desktop\obs-screencast-keys\plugin\build\_deps\uiohook-src\include;C:\Users\tomas\Desktop\obs-screencast-keys\plugin\..\build-deps\obs-studio\libobs;C:\Users\tomas\Desktop\obs-screencast-keys\plugin\..\build-deps\obs-studio\build_x64\config;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\tomas\Desktop\obs-screencast-keys\plugin\build\_deps\uiohook-src\include;C:\Users\tomas\Desktop\obs-screencast-keys\plugin\build\_deps\freetype-build\include;C:\Users\tomas\Desktop\obs-screencast-keys\plugin\build\_deps\freetype-src\include;C:\Users\tomas\Desktop\obs-screencast-keys\plugin\..\build-deps\obs-studio\libobs;C:\Users\tomas\Desktop\obs-screencast-keys\plugin\..\build-deps\obs-studio\build_x64\config;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Midl>
-      <AdditionalIncludeDirectories>C:\Users\tomas\Desktop\obs-screencast-keys\plugin\build\_deps\uiohook-src\include;C:\Users\tomas\Desktop\obs-screencast-keys\plugin\..\build-deps\obs-studio\libobs;C:\Users\tomas\Desktop\obs-screencast-keys\plugin\..\build-deps\obs-studio\build_x64\config;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\tomas\Desktop\obs-screencast-keys\plugin\build\_deps\uiohook-src\include;C:\Users\tomas\Desktop\obs-screencast-keys\plugin\build\_deps\freetype-build\include;C:\Users\tomas\Desktop\obs-screencast-keys\plugin\build\_deps\freetype-src\include;C:\Users\tomas\Desktop\obs-screencast-keys\plugin\..\build-deps\obs-studio\libobs;C:\Users\tomas\Desktop\obs-screencast-keys\plugin\..\build-deps\obs-studio\build_x64\config;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
       <HeaderFileName>%(Filename).h</HeaderFileName>
       <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
@@ -234,7 +234,7 @@
       <ProxyFileName>%(Filename)_p.c</ProxyFileName>
     </Midl>
     <Link>
-      <AdditionalDependencies>C:\Users\tomas\Desktop\obs-screencast-keys\plugin\..\build-deps\obs-studio\build_x64\libobs\RelWithDebInfo\obs.lib;_deps\uiohook-build\MinSizeRel\uiohook.lib;C:\Program Files (x86)\Windows Kits\10\Lib\10.0.22621.0\um\x64\AdvAPI32.Lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
+      <AdditionalDependencies>C:\Users\tomas\Desktop\obs-screencast-keys\plugin\..\build-deps\obs-studio\build_x64\libobs\RelWithDebInfo\obs.lib;_deps\uiohook-build\MinSizeRel\uiohook.lib;_deps\freetype-build\MinSizeRel\freetype.lib;C:\Program Files (x86)\Windows Kits\10\Lib\10.0.22621.0\um\x64\AdvAPI32.Lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
       <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalOptions>%(AdditionalOptions) /machine:x64</AdditionalOptions>
       <DataExecutionPrevention></DataExecutionPrevention>
@@ -253,7 +253,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>C:\Users\tomas\Desktop\obs-screencast-keys\plugin\build\_deps\uiohook-src\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\tomas\Desktop\obs-screencast-keys\plugin\build\_deps\uiohook-src\include;C:\Users\tomas\Desktop\obs-screencast-keys\plugin\build\_deps\freetype-build\include;C:\Users\tomas\Desktop\obs-screencast-keys\plugin\build\_deps\freetype-src\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalOptions>%(AdditionalOptions) /external:I "C:/Users/tomas/Desktop/obs-screencast-keys/plugin/../build-deps/obs-studio/libobs" /external:I "C:/Users/tomas/Desktop/obs-screencast-keys/plugin/../build-deps/obs-studio/build_x64/config"</AdditionalOptions>
       <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
       <BasicRuntimeChecks>Default</BasicRuntimeChecks>
@@ -278,10 +278,10 @@
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;CMAKE_INTDIR=\"RelWithDebInfo\";screencast_keys_EXPORTS</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>C:\Users\tomas\Desktop\obs-screencast-keys\plugin\build\_deps\uiohook-src\include;C:\Users\tomas\Desktop\obs-screencast-keys\plugin\..\build-deps\obs-studio\libobs;C:\Users\tomas\Desktop\obs-screencast-keys\plugin\..\build-deps\obs-studio\build_x64\config;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\tomas\Desktop\obs-screencast-keys\plugin\build\_deps\uiohook-src\include;C:\Users\tomas\Desktop\obs-screencast-keys\plugin\build\_deps\freetype-build\include;C:\Users\tomas\Desktop\obs-screencast-keys\plugin\build\_deps\freetype-src\include;C:\Users\tomas\Desktop\obs-screencast-keys\plugin\..\build-deps\obs-studio\libobs;C:\Users\tomas\Desktop\obs-screencast-keys\plugin\..\build-deps\obs-studio\build_x64\config;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Midl>
-      <AdditionalIncludeDirectories>C:\Users\tomas\Desktop\obs-screencast-keys\plugin\build\_deps\uiohook-src\include;C:\Users\tomas\Desktop\obs-screencast-keys\plugin\..\build-deps\obs-studio\libobs;C:\Users\tomas\Desktop\obs-screencast-keys\plugin\..\build-deps\obs-studio\build_x64\config;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\tomas\Desktop\obs-screencast-keys\plugin\build\_deps\uiohook-src\include;C:\Users\tomas\Desktop\obs-screencast-keys\plugin\build\_deps\freetype-build\include;C:\Users\tomas\Desktop\obs-screencast-keys\plugin\build\_deps\freetype-src\include;C:\Users\tomas\Desktop\obs-screencast-keys\plugin\..\build-deps\obs-studio\libobs;C:\Users\tomas\Desktop\obs-screencast-keys\plugin\..\build-deps\obs-studio\build_x64\config;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
       <HeaderFileName>%(Filename).h</HeaderFileName>
       <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
@@ -289,7 +289,7 @@
       <ProxyFileName>%(Filename)_p.c</ProxyFileName>
     </Midl>
     <Link>
-      <AdditionalDependencies>C:\Users\tomas\Desktop\obs-screencast-keys\plugin\..\build-deps\obs-studio\build_x64\libobs\RelWithDebInfo\obs.lib;_deps\uiohook-build\RelWithDebInfo\uiohook.lib;C:\Program Files (x86)\Windows Kits\10\Lib\10.0.22621.0\um\x64\AdvAPI32.Lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
+      <AdditionalDependencies>C:\Users\tomas\Desktop\obs-screencast-keys\plugin\..\build-deps\obs-studio\build_x64\libobs\RelWithDebInfo\obs.lib;_deps\uiohook-build\RelWithDebInfo\uiohook.lib;_deps\freetype-build\RelWithDebInfo\freetype.lib;C:\Program Files (x86)\Windows Kits\10\Lib\10.0.22621.0\um\x64\AdvAPI32.Lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
       <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalOptions>%(AdditionalOptions) /machine:x64</AdditionalOptions>
       <DataExecutionPrevention></DataExecutionPrevention>
@@ -366,11 +366,16 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
   <ItemGroup>
     <ClCompile Include="C:\Users\tomas\Desktop\obs-screencast-keys\plugin\src\plugin-main.cpp" />
     <ClCompile Include="C:\Users\tomas\Desktop\obs-screencast-keys\plugin\src\screencast-keys-source.cpp" />
+    <ClCompile Include="C:\Users\tomas\Desktop\obs-screencast-keys\plugin\src\settings.cpp" />
     <ClCompile Include="C:\Users\tomas\Desktop\obs-screencast-keys\plugin\src\input\event-types.cpp" />
     <ClCompile Include="C:\Users\tomas\Desktop\obs-screencast-keys\plugin\src\input\global-input-hook.cpp" />
     <ClCompile Include="C:\Users\tomas\Desktop\obs-screencast-keys\plugin\src\input\input-hook-manager.cpp" />
     <ClCompile Include="C:\Users\tomas\Desktop\obs-screencast-keys\plugin\src\state\event-history.cpp" />
     <ClCompile Include="C:\Users\tomas\Desktop\obs-screencast-keys\plugin\src\state\input-state.cpp" />
+    <ClCompile Include="C:\Users\tomas\Desktop\obs-screencast-keys\plugin\src\render\draw-utils.cpp" />
+    <ClCompile Include="C:\Users\tomas\Desktop\obs-screencast-keys\plugin\src\render\glyph-atlas.cpp" />
+    <ClCompile Include="C:\Users\tomas\Desktop\obs-screencast-keys\plugin\src\render\layout.cpp" />
+    <ClCompile Include="C:\Users\tomas\Desktop\obs-screencast-keys\plugin\src\render\mouse-icon-images.cpp" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
@@ -379,6 +384,10 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
       <Name>ZERO_CHECK</Name>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </ProjectReference>
+    <ProjectReference Include="C:\Users\tomas\Desktop\obs-screencast-keys\plugin\build\_deps\freetype-build\freetype.vcxproj">
+      <Project>{E301467F-AD64-38FA-8B9C-B110E3C13D04}</Project>
+      <Name>freetype</Name>
     </ProjectReference>
     <ProjectReference Include="C:\Users\tomas\Desktop\obs-screencast-keys\plugin\build\_deps\uiohook-build\uiohook.vcxproj">
       <Project>{4C0A0F49-2E54-3833-9F27-9A4E7591E447}</Project>

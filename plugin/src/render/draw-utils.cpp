@@ -3,7 +3,10 @@
 #include <cmath>
 #include <vector>
 
+#include <obs.h>
+
 #include <graphics/graphics.h>
+#include <graphics/vec2.h>
 #include <graphics/vec4.h>
 
 namespace sk {
@@ -282,10 +285,46 @@ void draw_text(const DrawCommand& cmd, GlyphAtlas& atlas) {
     gs_technique_end(tech);
 }
 
+// Full-white-multiply textured blit (matches ops.py's draw_custom_mouse,
+// which draws with immColor4f(1, 1, 1, 1) -- no color tint applied to
+// custom user-supplied images, unlike text/shapes).
+void draw_image(const DrawCommand& cmd, CustomMouseImages& mouse_images) {
+    gs_texture_t* tex = mouse_images.texture(cmd.image_slot);
+    if (!tex) {
+        return;
+    }
+
+    gs_effect_t* default_effect = obs_get_base_effect(OBS_EFFECT_DEFAULT);
+    gs_eparam_t* image_param = gs_effect_get_param_by_name(default_effect, "image");
+    gs_technique_t* tech = gs_effect_get_technique(default_effect, "Draw");
+
+    gs_effect_set_texture(image_param, tex);
+
+    gs_technique_begin(tech);
+    gs_technique_begin_pass(tech, 0);
+
+    immediate_draw(GS_TRISTRIP, [&] {
+        gs_texcoord(0.0f, 0.0f, 0);
+        gs_vertex2f(cmd.x, cmd.y);
+        gs_texcoord(1.0f, 0.0f, 0);
+        gs_vertex2f(cmd.x + cmd.w, cmd.y);
+        gs_texcoord(0.0f, 1.0f, 0);
+        gs_vertex2f(cmd.x, cmd.y + cmd.h);
+        gs_texcoord(1.0f, 1.0f, 0);
+        gs_vertex2f(cmd.x + cmd.w, cmd.y + cmd.h);
+    });
+
+    gs_technique_end_pass(tech);
+    gs_technique_end(tech);
+}
+
 } // namespace
 
-void draw_display_list(const DisplayList& commands, GlyphAtlas& atlas) {
+void draw_display_list(const DisplayList& commands, GlyphAtlas& atlas, CustomMouseImages* mouse_images) {
     atlas.flush_pending_uploads();
+    if (mouse_images) {
+        mouse_images->flush_pending_uploads();
+    }
 
     gs_enable_blending(true);
     gs_blend_function(GS_BLEND_SRCALPHA, GS_BLEND_INVSRCALPHA);
@@ -303,6 +342,11 @@ void draw_display_list(const DisplayList& commands, GlyphAtlas& atlas) {
                 break;
             case DrawCommandType::Text:
                 draw_text(cmd, atlas);
+                break;
+            case DrawCommandType::Image:
+                if (mouse_images) {
+                    draw_image(cmd, *mouse_images);
+                }
                 break;
         }
     }

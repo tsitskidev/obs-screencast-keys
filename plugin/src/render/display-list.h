@@ -24,7 +24,14 @@ enum class DrawCommandType {
     RoundedRect,
     Line,
     Text,
+    Image,
 };
+
+// Which custom mouse image slot an Image command refers to. draw-utils.cpp
+// resolves this to an actual gs_texture_t via the CustomMouseImages passed
+// into draw_display_list() -- layout.cpp itself never touches a texture
+// handle, keeping the "gs_* only in video_render" boundary intact.
+enum class MouseImageSlot { Base, Left, Right, Middle };
 
 // Plain-data draw instruction. layout.cpp produces a DisplayList (a vector
 // of these) from the current EventHistory/InputState during video_tick;
@@ -52,6 +59,9 @@ struct DrawCommand {
     // draw-utils), since layout.cpp already measured with this exact size.
     std::string text;
     int font_size = 16;
+
+    // Image only.
+    MouseImageSlot image_slot = MouseImageSlot::Base;
 };
 
 using DisplayList = std::vector<DrawCommand>;

@@ -1,0 +1,10 @@
+^C:\USERS\TOMAS\DESKTOP\OBS-SCREENCAST-KEYS\PLUGIN\BUILD\_DEPS\FREETYPE-SUBBUILD\CMAKELISTS.TXT
+setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SC:/Users/tomas/Desktop/obs-screencast-keys/plugin/build/_deps/freetype-subbuild -BC:/Users/tomas/Desktop/obs-screencast-keys/plugin/build/_deps/freetype-subbuild --check-stamp-file C:/Users/tomas/Desktop/obs-screencast-keys/plugin/build/_deps/freetype-subbuild/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd

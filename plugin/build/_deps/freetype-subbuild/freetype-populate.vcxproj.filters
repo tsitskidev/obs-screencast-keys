@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <CustomBuild Include="C:\Users\tomas\Desktop\obs-screencast-keys\plugin\build\_deps\freetype-subbuild\CMakeFiles\24762031c9fbc9f8c87d2c75a85ae249\freetype-populate-mkdir.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\tomas\Desktop\obs-screencast-keys\plugin\build\_deps\freetype-subbuild\CMakeFiles\24762031c9fbc9f8c87d2c75a85ae249\freetype-populate-download.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\tomas\Desktop\obs-screencast-keys\plugin\build\_deps\freetype-subbuild\CMakeFiles\24762031c9fbc9f8c87d2c75a85ae249\freetype-populate-update.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\tomas\Desktop\obs-screencast-keys\plugin\build\_deps\freetype-subbuild\CMakeFiles\24762031c9fbc9f8c87d2c75a85ae249\freetype-populate-patch.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\tomas\Desktop\obs-screencast-keys\plugin\build\_deps\freetype-subbuild\CMakeFiles\24762031c9fbc9f8c87d2c75a85ae249\freetype-populate-configure.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\tomas\Desktop\obs-screencast-keys\plugin\build\_deps\freetype-subbuild\CMakeFiles\24762031c9fbc9f8c87d2c75a85ae249\freetype-populate-build.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\tomas\Desktop\obs-screencast-keys\plugin\build\_deps\freetype-subbuild\CMakeFiles\24762031c9fbc9f8c87d2c75a85ae249\freetype-populate-install.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\tomas\Desktop\obs-screencast-keys\plugin\build\_deps\freetype-subbuild\CMakeFiles\24762031c9fbc9f8c87d2c75a85ae249\freetype-populate-test.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\tomas\Desktop\obs-screencast-keys\plugin\build\_deps\freetype-subbuild\CMakeFiles\1cafc710b5034d19b632f6dbd1ec6ebf\freetype-populate-complete.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\tomas\Desktop\obs-screencast-keys\plugin\build\_deps\freetype-subbuild\CMakeFiles\954048fc4a1db1a0b3a9af46a4668f22\freetype-populate.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\tomas\Desktop\obs-screencast-keys\plugin\build\_deps\freetype-subbuild\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="C:\Users\tomas\Desktop\obs-screencast-keys\plugin\build\_deps\freetype-subbuild\CMakeFiles\freetype-populate" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="CMake Rules">
+      <UniqueIdentifier>{A7409D07-3217-39BB-9579-894A547040BE}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

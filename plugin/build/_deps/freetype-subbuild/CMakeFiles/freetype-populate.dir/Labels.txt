@@ -1,0 +1,14 @@
+# Target labels
+ freetype-populate
+# Source files and their labels
+C:/Users/tomas/Desktop/obs-screencast-keys/plugin/build/_deps/freetype-subbuild/CMakeFiles/freetype-populate
+C:/Users/tomas/Desktop/obs-screencast-keys/plugin/build/_deps/freetype-subbuild/CMakeFiles/954048fc4a1db1a0b3a9af46a4668f22/freetype-populate.rule
+C:/Users/tomas/Desktop/obs-screencast-keys/plugin/build/_deps/freetype-subbuild/CMakeFiles/1cafc710b5034d19b632f6dbd1ec6ebf/freetype-populate-complete.rule
+C:/Users/tomas/Desktop/obs-screencast-keys/plugin/build/_deps/freetype-subbuild/CMakeFiles/24762031c9fbc9f8c87d2c75a85ae249/freetype-populate-build.rule
+C:/Users/tomas/Desktop/obs-screencast-keys/plugin/build/_deps/freetype-subbuild/CMakeFiles/24762031c9fbc9f8c87d2c75a85ae249/freetype-populate-configure.rule
+C:/Users/tomas/Desktop/obs-screencast-keys/plugin/build/_deps/freetype-subbuild/CMakeFiles/24762031c9fbc9f8c87d2c75a85ae249/freetype-populate-download.rule
+C:/Users/tomas/Desktop/obs-screencast-keys/plugin/build/_deps/freetype-subbuild/CMakeFiles/24762031c9fbc9f8c87d2c75a85ae249/freetype-populate-install.rule
+C:/Users/tomas/Desktop/obs-screencast-keys/plugin/build/_deps/freetype-subbuild/CMakeFiles/24762031c9fbc9f8c87d2c75a85ae249/freetype-populate-mkdir.rule
+C:/Users/tomas/Desktop/obs-screencast-keys/plugin/build/_deps/freetype-subbuild/CMakeFiles/24762031c9fbc9f8c87d2c75a85ae249/freetype-populate-patch.rule
+C:/Users/tomas/Desktop/obs-screencast-keys/plugin/build/_deps/freetype-subbuild/CMakeFiles/24762031c9fbc9f8c87d2c75a85ae249/freetype-populate-test.rule
+C:/Users/tomas/Desktop/obs-screencast-keys/plugin/build/_deps/freetype-subbuild/CMakeFiles/24762031c9fbc9f8c87d2c75a85ae249/freetype-populate-update.rule
