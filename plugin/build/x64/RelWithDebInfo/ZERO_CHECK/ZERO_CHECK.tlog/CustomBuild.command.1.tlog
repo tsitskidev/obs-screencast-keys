@@ -1,0 +1,10 @@
+^C:\USERS\TOMAS\DESKTOP\OBS-SCREENCAST-KEYS\PLUGIN\BUILD\CMAKEFILES\6D84D08787A819959C3EE31118D00E31\GENERATE.STAMP.RULE
+setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SC:/Users/tomas/Desktop/obs-screencast-keys/plugin -BC:/Users/tomas/Desktop/obs-screencast-keys/plugin/build --check-stamp-list CMakeFiles/generate.stamp.list --vs-solution-file C:/Users/tomas/Desktop/obs-screencast-keys/plugin/build/screencast-keys.sln
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd

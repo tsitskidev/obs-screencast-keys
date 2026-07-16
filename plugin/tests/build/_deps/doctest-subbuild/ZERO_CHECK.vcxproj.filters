@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <CustomBuild Include="C:\Users\tomas\Desktop\obs-screencast-keys\plugin\tests\build\_deps\doctest-subbuild\CMakeFiles\de1d7a51f1753a9601e3895a0b4a75d8\generate.stamp.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="CMake Rules">
+      <UniqueIdentifier>{92D983FD-CE2C-3598-B9B2-DB06E9DD96B3}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

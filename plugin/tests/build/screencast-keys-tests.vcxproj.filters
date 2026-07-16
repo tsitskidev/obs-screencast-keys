@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="C:\Users\tomas\Desktop\obs-screencast-keys\plugin\tests\test-main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\tomas\Desktop\obs-screencast-keys\plugin\tests\event-history-test.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\tomas\Desktop\obs-screencast-keys\plugin\tests\input-state-test.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\tomas\Desktop\obs-screencast-keys\plugin\tests\event-types-test.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\tomas\Desktop\obs-screencast-keys\plugin\src\input\event-types.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\tomas\Desktop\obs-screencast-keys\plugin\src\state\event-history.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\tomas\Desktop\obs-screencast-keys\plugin\src\state\input-state.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="C:\Users\tomas\Desktop\obs-screencast-keys\plugin\tests\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{926B9253-A390-3D78-9404-FE664A988943}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

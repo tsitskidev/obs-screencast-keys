@@ -1,0 +1,8 @@
+{
+	"InstallScripts" : 
+	[
+		"C:/Users/tomas/Desktop/obs-screencast-keys/plugin/tests/build/cmake_install.cmake",
+		"C:/Users/tomas/Desktop/obs-screencast-keys/plugin/tests/build/_deps/doctest-build/cmake_install.cmake"
+	],
+	"Parallel" : false
+}

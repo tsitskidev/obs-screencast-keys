@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <CustomBuild Include="C:\Users\tomas\Desktop\obs-screencast-keys\plugin\build\_deps\uiohook-subbuild\CMakeFiles\ec22b613c12dc56a4b011ee10739c8a4\uiohook-populate-mkdir.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\tomas\Desktop\obs-screencast-keys\plugin\build\_deps\uiohook-subbuild\CMakeFiles\ec22b613c12dc56a4b011ee10739c8a4\uiohook-populate-download.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\tomas\Desktop\obs-screencast-keys\plugin\build\_deps\uiohook-subbuild\CMakeFiles\ec22b613c12dc56a4b011ee10739c8a4\uiohook-populate-update.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\tomas\Desktop\obs-screencast-keys\plugin\build\_deps\uiohook-subbuild\CMakeFiles\ec22b613c12dc56a4b011ee10739c8a4\uiohook-populate-patch.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\tomas\Desktop\obs-screencast-keys\plugin\build\_deps\uiohook-subbuild\CMakeFiles\ec22b613c12dc56a4b011ee10739c8a4\uiohook-populate-configure.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\tomas\Desktop\obs-screencast-keys\plugin\build\_deps\uiohook-subbuild\CMakeFiles\ec22b613c12dc56a4b011ee10739c8a4\uiohook-populate-build.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\tomas\Desktop\obs-screencast-keys\plugin\build\_deps\uiohook-subbuild\CMakeFiles\ec22b613c12dc56a4b011ee10739c8a4\uiohook-populate-install.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\tomas\Desktop\obs-screencast-keys\plugin\build\_deps\uiohook-subbuild\CMakeFiles\ec22b613c12dc56a4b011ee10739c8a4\uiohook-populate-test.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\tomas\Desktop\obs-screencast-keys\plugin\build\_deps\uiohook-subbuild\CMakeFiles\2d5396857b368f26611c24fc2e3b646d\uiohook-populate-complete.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\tomas\Desktop\obs-screencast-keys\plugin\build\_deps\uiohook-subbuild\CMakeFiles\7da2528763668fabc9d105225f96bb90\uiohook-populate.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\tomas\Desktop\obs-screencast-keys\plugin\build\_deps\uiohook-subbuild\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="C:\Users\tomas\Desktop\obs-screencast-keys\plugin\build\_deps\uiohook-subbuild\CMakeFiles\uiohook-populate" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="CMake Rules">
+      <UniqueIdentifier>{2053463B-2AD2-334B-B331-A336A608F957}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

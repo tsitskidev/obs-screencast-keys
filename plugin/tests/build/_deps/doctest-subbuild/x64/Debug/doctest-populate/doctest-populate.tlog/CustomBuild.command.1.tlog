@@ -1,0 +1,150 @@
+^C:\USERS\TOMAS\DESKTOP\OBS-SCREENCAST-KEYS\PLUGIN\TESTS\BUILD\_DEPS\DOCTEST-SUBBUILD\CMAKEFILES\608B6A0D8E194AC50E39B295116517F5\DOCTEST-POPULATE-MKDIR.RULE
+setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -Dcfgdir=/Debug -P C:/Users/tomas/Desktop/obs-screencast-keys/plugin/tests/build/_deps/doctest-subbuild/doctest-populate-prefix/tmp/doctest-populate-mkdirs.cmake
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E touch C:/Users/tomas/Desktop/obs-screencast-keys/plugin/tests/build/_deps/doctest-subbuild/doctest-populate-prefix/src/doctest-populate-stamp/Debug/doctest-populate-mkdir
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+^C:\USERS\TOMAS\DESKTOP\OBS-SCREENCAST-KEYS\PLUGIN\TESTS\BUILD\_DEPS\DOCTEST-SUBBUILD\CMAKEFILES\608B6A0D8E194AC50E39B295116517F5\DOCTEST-POPULATE-DOWNLOAD.RULE
+setlocal
+cd C:\Users\tomas\Desktop\obs-screencast-keys\plugin\tests\build\_deps
+if %errorlevel% neq 0 goto :cmEnd
+C:
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -DCMAKE_MESSAGE_LOG_LEVEL=VERBOSE -P C:/Users/tomas/Desktop/obs-screencast-keys/plugin/tests/build/_deps/doctest-subbuild/doctest-populate-prefix/tmp/doctest-populate-gitclone.cmake
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E touch C:/Users/tomas/Desktop/obs-screencast-keys/plugin/tests/build/_deps/doctest-subbuild/doctest-populate-prefix/src/doctest-populate-stamp/Debug/doctest-populate-download
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+^C:\USERS\TOMAS\DESKTOP\OBS-SCREENCAST-KEYS\PLUGIN\TESTS\BUILD\_DEPS\DOCTEST-SUBBUILD\CMAKEFILES\608B6A0D8E194AC50E39B295116517F5\DOCTEST-POPULATE-UPDATE.RULE
+setlocal
+cd C:\Users\tomas\Desktop\obs-screencast-keys\plugin\tests\build\_deps\doctest-src
+if %errorlevel% neq 0 goto :cmEnd
+C:
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -Dcan_fetch=YES -DCMAKE_MESSAGE_LOG_LEVEL=VERBOSE -P C:/Users/tomas/Desktop/obs-screencast-keys/plugin/tests/build/_deps/doctest-subbuild/doctest-populate-prefix/tmp/doctest-populate-gitupdate.cmake
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+^C:\USERS\TOMAS\DESKTOP\OBS-SCREENCAST-KEYS\PLUGIN\TESTS\BUILD\_DEPS\DOCTEST-SUBBUILD\CMAKEFILES\608B6A0D8E194AC50E39B295116517F5\DOCTEST-POPULATE-PATCH.RULE
+setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -E echo_append
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E touch C:/Users/tomas/Desktop/obs-screencast-keys/plugin/tests/build/_deps/doctest-subbuild/doctest-populate-prefix/src/doctest-populate-stamp/Debug/doctest-populate-patch
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+^C:\USERS\TOMAS\DESKTOP\OBS-SCREENCAST-KEYS\PLUGIN\TESTS\BUILD\_DEPS\DOCTEST-SUBBUILD\CMAKEFILES\608B6A0D8E194AC50E39B295116517F5\DOCTEST-POPULATE-CONFIGURE.RULE
+setlocal
+cd C:\Users\tomas\Desktop\obs-screencast-keys\plugin\tests\build\_deps\doctest-build
+if %errorlevel% neq 0 goto :cmEnd
+C:
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E echo_append
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E touch C:/Users/tomas/Desktop/obs-screencast-keys/plugin/tests/build/_deps/doctest-subbuild/doctest-populate-prefix/src/doctest-populate-stamp/Debug/doctest-populate-configure
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+^C:\USERS\TOMAS\DESKTOP\OBS-SCREENCAST-KEYS\PLUGIN\TESTS\BUILD\_DEPS\DOCTEST-SUBBUILD\CMAKEFILES\608B6A0D8E194AC50E39B295116517F5\DOCTEST-POPULATE-BUILD.RULE
+setlocal
+cd C:\Users\tomas\Desktop\obs-screencast-keys\plugin\tests\build\_deps\doctest-build
+if %errorlevel% neq 0 goto :cmEnd
+C:
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E echo_append
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E touch C:/Users/tomas/Desktop/obs-screencast-keys/plugin/tests/build/_deps/doctest-subbuild/doctest-populate-prefix/src/doctest-populate-stamp/Debug/doctest-populate-build
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+^C:\USERS\TOMAS\DESKTOP\OBS-SCREENCAST-KEYS\PLUGIN\TESTS\BUILD\_DEPS\DOCTEST-SUBBUILD\CMAKEFILES\608B6A0D8E194AC50E39B295116517F5\DOCTEST-POPULATE-INSTALL.RULE
+setlocal
+cd C:\Users\tomas\Desktop\obs-screencast-keys\plugin\tests\build\_deps\doctest-build
+if %errorlevel% neq 0 goto :cmEnd
+C:
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E echo_append
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E touch C:/Users/tomas/Desktop/obs-screencast-keys/plugin/tests/build/_deps/doctest-subbuild/doctest-populate-prefix/src/doctest-populate-stamp/Debug/doctest-populate-install
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+^C:\USERS\TOMAS\DESKTOP\OBS-SCREENCAST-KEYS\PLUGIN\TESTS\BUILD\_DEPS\DOCTEST-SUBBUILD\CMAKEFILES\608B6A0D8E194AC50E39B295116517F5\DOCTEST-POPULATE-TEST.RULE
+setlocal
+cd C:\Users\tomas\Desktop\obs-screencast-keys\plugin\tests\build\_deps\doctest-build
+if %errorlevel% neq 0 goto :cmEnd
+C:
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E echo_append
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E touch C:/Users/tomas/Desktop/obs-screencast-keys/plugin/tests/build/_deps/doctest-subbuild/doctest-populate-prefix/src/doctest-populate-stamp/Debug/doctest-populate-test
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+^C:\USERS\TOMAS\DESKTOP\OBS-SCREENCAST-KEYS\PLUGIN\TESTS\BUILD\_DEPS\DOCTEST-SUBBUILD\CMAKEFILES\6671673434A793304F7ADE5A24DC0FB5\DOCTEST-POPULATE-COMPLETE.RULE
+setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -E make_directory C:/Users/tomas/Desktop/obs-screencast-keys/plugin/tests/build/_deps/doctest-subbuild/CMakeFiles/Debug
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E touch C:/Users/tomas/Desktop/obs-screencast-keys/plugin/tests/build/_deps/doctest-subbuild/CMakeFiles/Debug/doctest-populate-complete
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E touch C:/Users/tomas/Desktop/obs-screencast-keys/plugin/tests/build/_deps/doctest-subbuild/doctest-populate-prefix/src/doctest-populate-stamp/Debug/doctest-populate-done
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+^C:\USERS\TOMAS\DESKTOP\OBS-SCREENCAST-KEYS\PLUGIN\TESTS\BUILD\_DEPS\DOCTEST-SUBBUILD\CMAKEFILES\DE1D7A51F1753A9601E3895A0B4A75D8\DOCTEST-POPULATE.RULE
+setlocal
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+^C:\USERS\TOMAS\DESKTOP\OBS-SCREENCAST-KEYS\PLUGIN\TESTS\BUILD\_DEPS\DOCTEST-SUBBUILD\CMAKELISTS.TXT
+setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SC:/Users/tomas/Desktop/obs-screencast-keys/plugin/tests/build/_deps/doctest-subbuild -BC:/Users/tomas/Desktop/obs-screencast-keys/plugin/tests/build/_deps/doctest-subbuild --check-stamp-file C:/Users/tomas/Desktop/obs-screencast-keys/plugin/tests/build/_deps/doctest-subbuild/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd

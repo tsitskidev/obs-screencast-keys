@@ -1,0 +1,6 @@
+# CMake generation dependency list for this directory.
+C:/Program Files/CMake/share/cmake-4.1/Modules/BasicConfigVersion-SameMajorVersion.cmake.in
+C:/Program Files/CMake/share/cmake-4.1/Modules/CMakePackageConfigHelpers.cmake
+C:/Program Files/CMake/share/cmake-4.1/Modules/WriteBasicConfigVersionFile.cmake
+C:/Users/tomas/Desktop/obs-screencast-keys/plugin/tests/build/_deps/doctest-src/CMakeLists.txt
+C:/Users/tomas/Desktop/obs-screencast-keys/plugin/tests/build/_deps/doctest-src/scripts/cmake/Config.cmake.in

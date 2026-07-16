@@ -1,0 +1,150 @@
+^C:\USERS\TOMAS\DESKTOP\OBS-SCREENCAST-KEYS\PLUGIN\BUILD\_DEPS\UIOHOOK-SUBBUILD\CMAKEFILES\EC22B613C12DC56A4B011EE10739C8A4\UIOHOOK-POPULATE-MKDIR.RULE
+setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -Dcfgdir=/Debug -P C:/Users/tomas/Desktop/obs-screencast-keys/plugin/build/_deps/uiohook-subbuild/uiohook-populate-prefix/tmp/uiohook-populate-mkdirs.cmake
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E touch C:/Users/tomas/Desktop/obs-screencast-keys/plugin/build/_deps/uiohook-subbuild/uiohook-populate-prefix/src/uiohook-populate-stamp/Debug/uiohook-populate-mkdir
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+^C:\USERS\TOMAS\DESKTOP\OBS-SCREENCAST-KEYS\PLUGIN\BUILD\_DEPS\UIOHOOK-SUBBUILD\CMAKEFILES\EC22B613C12DC56A4B011EE10739C8A4\UIOHOOK-POPULATE-DOWNLOAD.RULE
+setlocal
+cd C:\Users\tomas\Desktop\obs-screencast-keys\plugin\build\_deps
+if %errorlevel% neq 0 goto :cmEnd
+C:
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -DCMAKE_MESSAGE_LOG_LEVEL=VERBOSE -P C:/Users/tomas/Desktop/obs-screencast-keys/plugin/build/_deps/uiohook-subbuild/uiohook-populate-prefix/tmp/uiohook-populate-gitclone.cmake
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E touch C:/Users/tomas/Desktop/obs-screencast-keys/plugin/build/_deps/uiohook-subbuild/uiohook-populate-prefix/src/uiohook-populate-stamp/Debug/uiohook-populate-download
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+^C:\USERS\TOMAS\DESKTOP\OBS-SCREENCAST-KEYS\PLUGIN\BUILD\_DEPS\UIOHOOK-SUBBUILD\CMAKEFILES\EC22B613C12DC56A4B011EE10739C8A4\UIOHOOK-POPULATE-UPDATE.RULE
+setlocal
+cd C:\Users\tomas\Desktop\obs-screencast-keys\plugin\build\_deps\uiohook-src
+if %errorlevel% neq 0 goto :cmEnd
+C:
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -Dcan_fetch=YES -DCMAKE_MESSAGE_LOG_LEVEL=VERBOSE -P C:/Users/tomas/Desktop/obs-screencast-keys/plugin/build/_deps/uiohook-subbuild/uiohook-populate-prefix/tmp/uiohook-populate-gitupdate.cmake
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+^C:\USERS\TOMAS\DESKTOP\OBS-SCREENCAST-KEYS\PLUGIN\BUILD\_DEPS\UIOHOOK-SUBBUILD\CMAKEFILES\EC22B613C12DC56A4B011EE10739C8A4\UIOHOOK-POPULATE-PATCH.RULE
+setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -E echo_append
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E touch C:/Users/tomas/Desktop/obs-screencast-keys/plugin/build/_deps/uiohook-subbuild/uiohook-populate-prefix/src/uiohook-populate-stamp/Debug/uiohook-populate-patch
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+^C:\USERS\TOMAS\DESKTOP\OBS-SCREENCAST-KEYS\PLUGIN\BUILD\_DEPS\UIOHOOK-SUBBUILD\CMAKEFILES\EC22B613C12DC56A4B011EE10739C8A4\UIOHOOK-POPULATE-CONFIGURE.RULE
+setlocal
+cd C:\Users\tomas\Desktop\obs-screencast-keys\plugin\build\_deps\uiohook-build
+if %errorlevel% neq 0 goto :cmEnd
+C:
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E echo_append
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E touch C:/Users/tomas/Desktop/obs-screencast-keys/plugin/build/_deps/uiohook-subbuild/uiohook-populate-prefix/src/uiohook-populate-stamp/Debug/uiohook-populate-configure
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+^C:\USERS\TOMAS\DESKTOP\OBS-SCREENCAST-KEYS\PLUGIN\BUILD\_DEPS\UIOHOOK-SUBBUILD\CMAKEFILES\EC22B613C12DC56A4B011EE10739C8A4\UIOHOOK-POPULATE-BUILD.RULE
+setlocal
+cd C:\Users\tomas\Desktop\obs-screencast-keys\plugin\build\_deps\uiohook-build
+if %errorlevel% neq 0 goto :cmEnd
+C:
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E echo_append
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E touch C:/Users/tomas/Desktop/obs-screencast-keys/plugin/build/_deps/uiohook-subbuild/uiohook-populate-prefix/src/uiohook-populate-stamp/Debug/uiohook-populate-build
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+^C:\USERS\TOMAS\DESKTOP\OBS-SCREENCAST-KEYS\PLUGIN\BUILD\_DEPS\UIOHOOK-SUBBUILD\CMAKEFILES\EC22B613C12DC56A4B011EE10739C8A4\UIOHOOK-POPULATE-INSTALL.RULE
+setlocal
+cd C:\Users\tomas\Desktop\obs-screencast-keys\plugin\build\_deps\uiohook-build
+if %errorlevel% neq 0 goto :cmEnd
+C:
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E echo_append
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E touch C:/Users/tomas/Desktop/obs-screencast-keys/plugin/build/_deps/uiohook-subbuild/uiohook-populate-prefix/src/uiohook-populate-stamp/Debug/uiohook-populate-install
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+^C:\USERS\TOMAS\DESKTOP\OBS-SCREENCAST-KEYS\PLUGIN\BUILD\_DEPS\UIOHOOK-SUBBUILD\CMAKEFILES\EC22B613C12DC56A4B011EE10739C8A4\UIOHOOK-POPULATE-TEST.RULE
+setlocal
+cd C:\Users\tomas\Desktop\obs-screencast-keys\plugin\build\_deps\uiohook-build
+if %errorlevel% neq 0 goto :cmEnd
+C:
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E echo_append
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E touch C:/Users/tomas/Desktop/obs-screencast-keys/plugin/build/_deps/uiohook-subbuild/uiohook-populate-prefix/src/uiohook-populate-stamp/Debug/uiohook-populate-test
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+^C:\USERS\TOMAS\DESKTOP\OBS-SCREENCAST-KEYS\PLUGIN\BUILD\_DEPS\UIOHOOK-SUBBUILD\CMAKEFILES\2D5396857B368F26611C24FC2E3B646D\UIOHOOK-POPULATE-COMPLETE.RULE
+setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -E make_directory C:/Users/tomas/Desktop/obs-screencast-keys/plugin/build/_deps/uiohook-subbuild/CMakeFiles/Debug
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E touch C:/Users/tomas/Desktop/obs-screencast-keys/plugin/build/_deps/uiohook-subbuild/CMakeFiles/Debug/uiohook-populate-complete
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E touch C:/Users/tomas/Desktop/obs-screencast-keys/plugin/build/_deps/uiohook-subbuild/uiohook-populate-prefix/src/uiohook-populate-stamp/Debug/uiohook-populate-done
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+^C:\USERS\TOMAS\DESKTOP\OBS-SCREENCAST-KEYS\PLUGIN\BUILD\_DEPS\UIOHOOK-SUBBUILD\CMAKEFILES\7DA2528763668FABC9D105225F96BB90\UIOHOOK-POPULATE.RULE
+setlocal
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+^C:\USERS\TOMAS\DESKTOP\OBS-SCREENCAST-KEYS\PLUGIN\BUILD\_DEPS\UIOHOOK-SUBBUILD\CMAKELISTS.TXT
+setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SC:/Users/tomas/Desktop/obs-screencast-keys/plugin/build/_deps/uiohook-subbuild -BC:/Users/tomas/Desktop/obs-screencast-keys/plugin/build/_deps/uiohook-subbuild --check-stamp-file C:/Users/tomas/Desktop/obs-screencast-keys/plugin/build/_deps/uiohook-subbuild/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd

@@ -1,0 +1,10 @@
+prefix=C:/Program Files/screencast-keys
+exec_prefix=${prefix}
+libdir=${prefix}/lib
+includedir=${prefix}/include
+
+Name: uiohook
+Description: uiohook library
+Version: 1.2.0
+Libs:  -L${libdir} -luiohook
+Cflags: -I${includedir}

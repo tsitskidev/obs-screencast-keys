@@ -1,0 +1,46 @@
+{
+	"sources" : 
+	[
+		{
+			"file" : "C:/Users/tomas/Desktop/obs-screencast-keys/plugin/build/_deps/uiohook-subbuild/CMakeFiles/uiohook-populate"
+		},
+		{
+			"file" : "C:/Users/tomas/Desktop/obs-screencast-keys/plugin/build/_deps/uiohook-subbuild/CMakeFiles/7da2528763668fabc9d105225f96bb90/uiohook-populate.rule"
+		},
+		{
+			"file" : "C:/Users/tomas/Desktop/obs-screencast-keys/plugin/build/_deps/uiohook-subbuild/CMakeFiles/2d5396857b368f26611c24fc2e3b646d/uiohook-populate-complete.rule"
+		},
+		{
+			"file" : "C:/Users/tomas/Desktop/obs-screencast-keys/plugin/build/_deps/uiohook-subbuild/CMakeFiles/ec22b613c12dc56a4b011ee10739c8a4/uiohook-populate-build.rule"
+		},
+		{
+			"file" : "C:/Users/tomas/Desktop/obs-screencast-keys/plugin/build/_deps/uiohook-subbuild/CMakeFiles/ec22b613c12dc56a4b011ee10739c8a4/uiohook-populate-configure.rule"
+		},
+		{
+			"file" : "C:/Users/tomas/Desktop/obs-screencast-keys/plugin/build/_deps/uiohook-subbuild/CMakeFiles/ec22b613c12dc56a4b011ee10739c8a4/uiohook-populate-download.rule"
+		},
+		{
+			"file" : "C:/Users/tomas/Desktop/obs-screencast-keys/plugin/build/_deps/uiohook-subbuild/CMakeFiles/ec22b613c12dc56a4b011ee10739c8a4/uiohook-populate-install.rule"
+		},
+		{
+			"file" : "C:/Users/tomas/Desktop/obs-screencast-keys/plugin/build/_deps/uiohook-subbuild/CMakeFiles/ec22b613c12dc56a4b011ee10739c8a4/uiohook-populate-mkdir.rule"
+		},
+		{
+			"file" : "C:/Users/tomas/Desktop/obs-screencast-keys/plugin/build/_deps/uiohook-subbuild/CMakeFiles/ec22b613c12dc56a4b011ee10739c8a4/uiohook-populate-patch.rule"
+		},
+		{
+			"file" : "C:/Users/tomas/Desktop/obs-screencast-keys/plugin/build/_deps/uiohook-subbuild/CMakeFiles/ec22b613c12dc56a4b011ee10739c8a4/uiohook-populate-test.rule"
+		},
+		{
+			"file" : "C:/Users/tomas/Desktop/obs-screencast-keys/plugin/build/_deps/uiohook-subbuild/CMakeFiles/ec22b613c12dc56a4b011ee10739c8a4/uiohook-populate-update.rule"
+		}
+	],
+	"target" : 
+	{
+		"labels" : 
+		[
+			"uiohook-populate"
+		],
+		"name" : "uiohook-populate"
+	}
+}

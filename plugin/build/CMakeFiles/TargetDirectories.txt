@@ -1,0 +1,7 @@
+C:/Users/tomas/Desktop/obs-screencast-keys/plugin/build/CMakeFiles/screencast-keys.dir
+C:/Users/tomas/Desktop/obs-screencast-keys/plugin/build/CMakeFiles/INSTALL.dir
+C:/Users/tomas/Desktop/obs-screencast-keys/plugin/build/CMakeFiles/ALL_BUILD.dir
+C:/Users/tomas/Desktop/obs-screencast-keys/plugin/build/CMakeFiles/ZERO_CHECK.dir
+C:/Users/tomas/Desktop/obs-screencast-keys/plugin/build/_deps/uiohook-build/CMakeFiles/uiohook.dir
+C:/Users/tomas/Desktop/obs-screencast-keys/plugin/build/_deps/uiohook-build/CMakeFiles/INSTALL.dir
+C:/Users/tomas/Desktop/obs-screencast-keys/plugin/build/_deps/uiohook-build/CMakeFiles/ALL_BUILD.dir

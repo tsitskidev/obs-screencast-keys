@@ -1,0 +1,3 @@
+C:/Users/tomas/Desktop/obs-screencast-keys/plugin/build/_deps/uiohook-subbuild/CMakeFiles/uiohook-populate.dir
+C:/Users/tomas/Desktop/obs-screencast-keys/plugin/build/_deps/uiohook-subbuild/CMakeFiles/ALL_BUILD.dir
+C:/Users/tomas/Desktop/obs-screencast-keys/plugin/build/_deps/uiohook-subbuild/CMakeFiles/ZERO_CHECK.dir
